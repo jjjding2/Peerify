@@ -15,11 +15,18 @@ function trimText(str) {
     return str;
 }
 
+function clearLocalStorage() {
+    localStorage.removeItem('prompt');
+    localStorage.removeItem('user-response');
+    localStorage.removeItem('response-ready');
+}
+
 class CreateRoom extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = {
+            roomID: 0,
             numRounds: -1,
             currentPlayers: [],
 
@@ -35,9 +42,10 @@ class CreateRoom extends React.Component {
         let num_rounds = document.getElementById('num-rounds').value;
         if(owner_nick == "" || num_rounds == "") return;
 
-        socket.emit('createRoom', this.props.id);
+        socket.emit('createRoom', { id: this.props.id, rounds: this.state.numRounds });
         socket.on('sendRoomId', roomID => {
-            this.setState({ roomID });
+            // localStorage.setItem('roomID', roomID);
+            this.setState({ roomID: roomID });
         });
 
         let curr = this.state.currentPlayers;
@@ -50,6 +58,7 @@ class CreateRoom extends React.Component {
 
     startGame() {
         localStorage.setItem("roomID", this.state.roomID);
+        clearLocalStorage();
         this.setState({
             readyToStart: true,
         });

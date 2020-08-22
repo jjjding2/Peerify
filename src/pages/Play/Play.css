@@ -31,7 +31,7 @@
     font-family: 'OpenSans-Light';
 
     cursor: pointer;
-    z-index: 2;
+    /* z-index: 2; */
 }
 
 .bottom-bar {
@@ -42,7 +42,7 @@
     position: relative;
 }
 
-.bottom-bar:after{
+.bottom-bar:after {
     position: absolute;
     content: "";
     bottom: 0;
@@ -53,6 +53,45 @@
     transition: .3s;
 }
 
-.bottom-bar:hover:after{
+.bottom-bar:hover:after {
     width: 100%;
+}
+
+.page-header {
+    position: fixed;
+    top: 5vh;
+    left: 50vw;
+    width: 90vw;
+    transform: translate(-50%,0);
+
+    text-align: center;
+
+    font-size: 3.5vh;
+    font-family: 'OpenSans-Light';
+}
+
+.user-response {
+    width: 90vw;
+    height: 60vh;
+    position: fixed;
+    top: 20vh;
+    left: 5vw;
+    padding: 1%;
+
+    font-size: 2vh;
+    font-family: 'OpenSans-Light';
+
+    box-sizing: border-box;
+    border: 0px solid transparent;
+    border-bottom: 1px solid rgb(0, 152, 240);
+    outline: none;
+
+    resize: none;
+
+    background: rgba(240,240,240);
+    transition: 0.35s;
+}
+
+.user-response:focus {
+    outline: 1px solid rgb(0,152,240);
 }

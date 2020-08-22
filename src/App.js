@@ -14,7 +14,7 @@ class App extends React.Component {
         super(props);
         this.state = {};
         socket.on('createId', (id) => {
-            this.setState({ id })
+            localStorage.setItem('userID', id);
         });
     }
 
@@ -24,10 +24,8 @@ class App extends React.Component {
                 <div className = 'top-border'> </div>
                 <Switch>
                     <Route exact path = '/' component = { Home } />
-                    <Route exact path = '/create-room' render={(routeProps) => (
-                        <CreateRoom id={this.state.id}/>
-                    )}/>
-                    <Route exact path = '/join-room' component = { JoinRoom } id={this.state.id}/>
+                    <Route exact path = '/create-room' component = { CreateRoom } />
+                    <Route exact path = '/join-room' component = { JoinRoom } />
                     <Route exact path = '/play' component = { Play } />
                 </Switch>
             </Router>
