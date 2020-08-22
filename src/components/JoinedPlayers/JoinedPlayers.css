@@ -1,9 +1,9 @@
 .parent-div {
     width: 92vw;
-    height: 70vh;
+    height: 73vh;
     left: 4vw;
-    top: 25vh;
+    top: 22vh;
     position: fixed;
-    background: rgba(0,0,0,0.1);
+    background: rgba(0,0,0,0.05);
     border-radius: 3px;
 }

@@ -11,14 +11,9 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className = 'navbar'>
-                <div className = 'navbar-entry' style = {{ right: '10%' }}>
+                <div className = 'navbar-entry' style = {{ left: '1%' }}>
                     <button className = 'navbar-button'>
-                        <Link className = 'remove-styling' to = '/create-room'> Create Room </Link>
-                    </button>
-                </div>
-                <div className = 'navbar-entry' style = {{ right: '1%' }}>
-                    <button className = 'navbar-button'>
-                        <Link className = 'remove-styling' to = '/join-room'> Join Room </Link>
+                        <Link className = 'remove-styling' to = '/'> Back </Link>
                     </button>
                 </div>
             </div>

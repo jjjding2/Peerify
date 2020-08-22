@@ -1,6 +1,13 @@
 import React from 'react';
+import socketIOClient from 'socket.io-client';
 
 import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
+import Navbar from '../../components/Navbar/Navbar';
+
+import './CreateRoom.css';
+
+const ENDPOINT = 'http://138.197.129.190:3000';
+const socket = socketIOClient(ENDPOINT);
 
 const keyLength = 7;
 
@@ -20,16 +27,25 @@ class CreateRoom extends React.Component {
 
         this.state = {
             roomID: genKey(),
+            currentPlayers: [],
         };
+    }
+
+    componentDidMount() {
+
     }
 
     render() {
         const roomIDText = "Room ID: " + this.state.roomID;
         return (
             <div>
-                <p style = {{ position: 'absolute', left: '4vw', top: '15vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
+                <Navbar />
+                <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '8vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
                     { roomIDText }
                 </p>
+                <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '8vh', transform: 'translate(0,50%)' }}>
+                    Start Game
+                </button>
                 <JoinedPlayers roomID = { this.state.roomID } />
             </div>
         );

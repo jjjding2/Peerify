@@ -1,0 +1,17 @@
+.button {
+    position: fixed;
+    top: 55vh;
+
+    width: 15vw;
+    height: 9vh;
+
+    font-family: 'OpenSans-Light';
+    font-size: 2.2vh;
+
+    color: black;
+}
+
+.remove-styling-home {
+    text-decoration: none;
+    color: black;
+}
