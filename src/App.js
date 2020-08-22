@@ -7,19 +7,31 @@ import JoinRoom from './pages/JoinRoom/JoinRoom';
 import Play from './pages/Play/Play';
 
 import './App.css';
+import socket from './socket';
 
-function App() {
-    return (
-        <Router>
-            <div className = 'top-border'> </div>
-            <Switch>
-                <Route exact path = '/' component = { Home } />
-                <Route exact path = '/create-room' component = { CreateRoom } />
-                <Route exact path = '/join-room' component = { JoinRoom } />
-                <Route exact path = '/play' component = { Play } />
-            </Switch>
-        </Router>
-    );
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+        socket.on('createId', (id) => {
+            this.setState({ id })
+        });
+    }
+
+    render(){
+        return (
+            <Router>
+                <Switch>
+                    <Route exact path = '/' component = { Home } />
+                    <Route exact path = '/create-room' render={(routeProps) => (
+                        <CreateRoom id={this.state.id}/>
+                    )}/>
+                    <Route exact path = '/join-room' component = { JoinRoom } id={this.state.id}/>
+                    <Route exact path = '/play' component = { Play } />
+                </Switch>
+            </Router>
+        );
+    }
 }
 
 export default App;
