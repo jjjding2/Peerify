@@ -170,7 +170,12 @@ class Play extends React.Component {
             }else{
                 if(localStorage.getItem('evaluation') == undefined){
                     component =
-                    <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                    <div>
+                            <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                        <div className = 'image-container'>
+                            <div className = 'waiting-image'></div>
+                        </div>
+                    </div>
                 }else{
                     if(localStorage.getItem('evaluation-ready') == undefined){
                         component =
@@ -186,7 +191,10 @@ class Play extends React.Component {
                     }else{
                         
                         component =
+                        <div>
                         <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                        
+                        </div>
                     }
                 }
             }

@@ -12,6 +12,7 @@ class Home extends React.Component {
     render() {
         return (
             <div>
+                <div className = "title" >Heading</div>
                 <div className = 'main-background'> </div>
                 <div className = 'button' style = {{ left: '22vw', top: '27vh' }}>
                     <div className = 'bottom-bar'>
