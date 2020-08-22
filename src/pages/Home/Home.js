@@ -12,12 +12,17 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                <button key = 'abc' className = 'button' style = {{ left: '34vw' }}>
-                    <Link className = 'remove-styling-home' to = '/create-room'> Create Room </Link>
-                </button>
-                <button key = 'abcd' className = 'button' style = {{ left: '51vw' }}>
-                    <Link className = 'remove-styling-home' to = '/join-room'> Join Room </Link>
-                </button>
+                <div className = 'main-background'> </div>
+                <div className = 'button' style = {{ left: '22vw', top: '27vh' }}>
+                    <div className = 'bottom-bar'>
+                        <Link className = 'remove-styling-home' to = '/create-room'> <p> Create Room </p> </Link>
+                    </div>
+                </div>
+                <div className = 'button' style = {{ left: '58vw', top: '45vh' }}>
+                    <div className = 'bottom-bar'>
+                        <Link className = 'remove-styling-home' to = '/join-room'> <p> Join Room </p> </Link>
+                    </div>
+                </div>
             </div>
         );
     }

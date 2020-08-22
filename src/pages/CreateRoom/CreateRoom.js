@@ -18,7 +18,9 @@ function trimText(str) {
 function clearLocalStorage() {
     localStorage.removeItem('prompt');
     localStorage.removeItem('user-response');
+    localStorage.removeItem('user-evaluation');
     localStorage.removeItem('response-ready');
+    localStorage.removeItem('evaluation-ready');
 }
 
 class CreateRoom extends React.Component {
@@ -62,6 +64,8 @@ class CreateRoom extends React.Component {
         this.setState({
             readyToStart: true,
         });
+        socket.emit('startGame', { roomId: this.state.roomID });
+        socket.emit('promptStage', { roomId: this.state.roomID });
     }
 
     render() {

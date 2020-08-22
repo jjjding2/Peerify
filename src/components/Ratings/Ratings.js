@@ -6,10 +6,8 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import './Ratings.css';
 
 class Ratings extends React.Component {
-
-    constructor() {
-        super();
-
+    constructor(props) {
+        super(props);
     }
 
     handleRatingChange = (newValue) => {

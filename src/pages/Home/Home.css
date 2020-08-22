@@ -2,16 +2,62 @@
     position: fixed;
     top: 55vh;
 
-    width: 15vw;
-    height: 9vh;
+    /* width: 13vw; */
+    /* padding-left: 4vw; */
+    /* padding-right: 4vw; */
+    height: 5vh;
 
-    font-family: 'OpenSans-Light';
-    font-size: 2.2vh;
+    font-family: 'Montserrat-Bold';
+    font-size: 3vh;
+
+    /* background: black; */
+    outline: none;
+    border: none;
 
     color: black;
 }
 
+p {
+    transition: 0.3s;
+}
+p:hover {
+    color: rgba(29,133,224);
+}
+
 .remove-styling-home {
     text-decoration: none;
+    text-align: center;
     color: black;
+}
+
+.main-background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 1vh;
+    background: url('../../images/homepage.png') no-repeat center center / contain;
+}
+
+.bottom-bar {
+    display: block;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    position: relative;
+    background: transparent;
+}
+
+.bottom-bar:after {
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 5%;
+    background-image: linear-gradient(to right, rgba(29,133,224), rgba(29,221,224));
+    transition: .3s;
+}
+
+.bottom-bar:hover:after {
+    width: 100%;
 }

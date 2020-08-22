@@ -3,6 +3,8 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import Ratings from '../../components/Ratings/Ratings';
 
+import socket from '../../socket';
+
 import './Play.css';
 
 function trimText(str) {
@@ -22,12 +24,70 @@ class Play extends React.Component {
 
             userResponse: localStorage.getItem('user-response') == undefined?"":localStorage.getItem('user-response'),
             characterUpdateCount: 0,
-            rating: 2.5
+
+            userEvaluation: "",
+            evaluationCharacterUpdateCount: 0,
+
+            rating: 2.5,
         };
 
         this.submitPrompt = this.submitPrompt.bind(this);
         this.submitResponse = this.submitResponse.bind(this);
         this.responseChange = this.responseChange.bind(this);
+        this.evaluationChange = this.evaluationChange.bind(this);
+    }
+
+    componentDidMount() {
+        socket.on('play', leader => {
+            localStorage.setItem('leaderID', leader);
+            this.state.isLeader = (leader == localStorage.getItem('userID'));
+        });
+
+        socket.on('finishPrompt', () => {
+            if(this.state.isLeader && localStorage.getItem('prompt') == undefined){
+                this.submitPrompt(true);
+            }
+        });
+
+        socket.on('finishWriting', () => {
+            if(localStorage.getItem('response-ready') == undefined){
+                this.submitResponse(true);
+            }
+        });
+
+        socket.on('allSubmitted', () => {
+            if(this.state.isLeader){
+                socket.emit('evaluationStage', { roomId: localStorage.getItem("roomID") });
+            }
+            socket.emit('getEvaluation', { userId: localStorage.getItem('userID'), roomId: localStorage.getItem('roomID') });
+        });
+
+        socket.on('evaluation', entry => {
+            localStorage.setItem('evaluationText', entry.text);
+            this.forceUpdate();
+        });
+
+        socket.on('finishEvaluation', () => {
+            if(localStorage.getItem('evaluation-ready') == undefined){
+                this.submitEvaluation();
+            }
+        });
+
+        socket.on('allEvaluated', () => {
+
+        });
+    }
+
+    evaluationChange(e) {
+        let t = this.state.evaluationCharacterUpdateCount+1;
+        if(t == 20){
+            localStorage.setItem('user-evaluation', e);
+            t = 0;
+        }
+        this.setState({
+            userEvaluation: e,
+            evaluationCharacterUpdateCount: t,
+        });
     }
 
     responseChange(e) {
@@ -42,18 +102,28 @@ class Play extends React.Component {
         });
     }
 
-    submitPrompt() {
+    submitPrompt(forceSubmit) {
         let pp = trimText(document.getElementById('prompt').value);
-        if(pp == "") return;
+        if(pp == "" && forceSubmit == false) return;
         localStorage.setItem('prompt', pp);
+        socket.emit('writingStage', { roomId: localStorage.getItem('roomID'), prompt: pp })
         this.forceUpdate();
     }
 
-    submitResponse() {
+    submitResponse(forceSubmit) {
         let pp = trimText(document.getElementById('user-response').value);
-        if(pp == "") return;
+        if(pp == "" && forceSubmit == false) return;
         localStorage.setItem('user-response', pp);
         localStorage.setItem('response-ready', true);
+        socket.emit('sendText', { userId: localStorage.getItem('userID'), roomId: localStorage.getItem('roomID'), text: pp });
+        this.forceUpdate();
+    }
+
+    submitEvaluation() {
+        let pp = trimText(document.getElementById('user-evaluation').value);
+        localStorage.setItem('user-evaluation', pp);
+        localStorage.setItem('evaluation-ready', true);
+        socket.emit('sendEvaluation', { userId: localStorage.getItem('userID'), roomId: localStorage.getItem('roomID'), text: pp, rating: this.state.rating })
         this.forceUpdate();
     }
 
@@ -76,7 +146,7 @@ class Play extends React.Component {
                     <input id = 'prompt' className = 'prompt' placeholder = 'Enter your prompt.' />
                     <div className = 'prompt-submit'>
                         <button className = 'prompt-submit'> Submit </button>
-                        <div className = 'bottom-bar' onClick = { this.submitPrompt }> </div>
+                        <div className = 'bottom-bar' onClick = { () => this.submitPrompt(false) }> </div>
                     </div>
                 </div>
             }else{
@@ -93,12 +163,31 @@ class Play extends React.Component {
                     <textarea id = 'user-response' className = 'user-response' placeholder = 'Enter your response!' value = { this.state.userResponse } onChange = { e => this.responseChange(e.target.value) } />
                     <div className = 'prompt-submit' style = {{ top: '83vh' }}>
                         <button className = 'prompt-submit' style = {{ top: '83vh' }}> Submit </button>
-                        <div className = 'bottom-bar' onClick = { this.submitResponse }> </div>
+                        <div className = 'bottom-bar' onClick = { () => this.submitResponse(false) }> </div>
                     </div>
                 </div>
             }else{
-                component =
-                <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                if(localStorage.getItem('evaluation') == undefined){
+                    component =
+                    <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                }else{
+                    if(localStorage.getItem('evaluation-ready') == undefined){
+                        component =
+                        <div>
+                            <h1 className = 'page-header'> Your partner's response was: </h1>
+                            <textarea className = 'user-response' readonly = 'true' style = {{ top: '20vh', height: '25vh' }} value = { localStorage.getItem('evaluation') } />
+                            <textarea id = 'user-evaluation' className = 'user-response' style = {{ top: '48vh', height: '30vh' }} placeholder = 'Any advice/thoughts?' value = { this.state.userEvaluation } onChange = { e => this.evaluationChange(e.target.value) } />
+                            <div className = 'prompt-submit' style = {{ top: '90vh' }}>
+                                <button className = 'prompt-submit' style = {{ top: '90vh' }}> Submit </button>
+                                <div className = 'bottom-bar' onClick = { () => this.submitEvaluation() }> </div>
+                            </div>
+                        </div>
+                    }else{
+                        
+                        component =
+                        <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                    }
+                }
             }
         }
 
