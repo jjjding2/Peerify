@@ -7,8 +7,6 @@ import JoinRoom from './pages/JoinRoom/JoinRoom';
 
 import './App.css';
 
-import Navbar from './components/Navbar/Navbar';
-
 function App() {
     return (
         <Router>
