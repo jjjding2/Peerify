@@ -6,20 +6,7 @@ import Navbar from '../../components/Navbar/Navbar';
 
 import './CreateRoom.css';
 
-const ENDPOINT = 'http://138.197.129.190:3000';
-const socket = socketIOClient(ENDPOINT);
-
-const keyLength = 7;
-
-function genRandomNumber() {
-    let low = Math.pow(10,keyLength-1), high = Math.pow(10,keyLength)-1;
-    return Math.floor(Math.random()*(high-low+1)+low);
-}
-
-function genKey() {
-    //temporary thing, key will actually be retrieved from backend
-    return genRandomNumber();
-}
+import socket from '../../socket';
 
 function trimText(str) {
     while(str.length > 0 && str[0] == ' ') str = str.substring(1);
@@ -28,11 +15,10 @@ function trimText(str) {
 }
 
 class CreateRoom extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            roomID: genKey(),
             numRounds: -1,
             currentPlayers: [],
         };
@@ -44,6 +30,12 @@ class CreateRoom extends React.Component {
         let owner_nick = trimText(document.getElementById('owner-nickname').value);
         let num_rounds = document.getElementById('num-rounds').value;
         if(owner_nick == "" || num_rounds == "") return;
+
+        socket.emit('createRoom', this.props.id);
+        socket.on('sendRoomId', roomID => {
+            this.setState({ roomID });
+        });
+
         let curr = this.state.currentPlayers;
         curr.push(owner_nick);
         this.setState({
@@ -67,7 +59,7 @@ class CreateRoom extends React.Component {
                     :
                     <div>
                         <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '8vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
-                            { roomIDText }
+                            Room ID: { this.state.roomID }
                         </p>
                         <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '8vh', transform: 'translate(0,50%)' }}>
                             Start Game
