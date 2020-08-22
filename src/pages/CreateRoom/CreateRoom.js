@@ -44,7 +44,9 @@ class CreateRoom extends React.Component {
         let num_rounds = document.getElementById('num-rounds').value;
         if(owner_nick == "" || num_rounds == "") return;
 
-        socket.emit('createRoom', { id: this.props.id, rounds: this.state.numRounds });
+        console.log(localStorage.getItem('userID'));
+
+        socket.emit('createRoom', localStorage.getItem('userID'), num_rounds);
         socket.on('sendRoomId', roomID => {
             // localStorage.setItem('roomID', roomID);
             this.setState({ roomID: roomID });
@@ -64,8 +66,8 @@ class CreateRoom extends React.Component {
         this.setState({
             readyToStart: true,
         });
-        socket.emit('startGame', { roomId: this.state.roomID });
-        socket.emit('promptStage', { roomId: this.state.roomID });
+        socket.emit('startGame', this.state.roomID);
+        socket.emit('promptStage', this.state.roomID);
     }
 
     render() {
