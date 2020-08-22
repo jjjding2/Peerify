@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Redirect } from 'react-router-dom';
+import Ratings from '../../components/Ratings/Ratings';
 
 import './Play.css';
 import { tsExpressionWithTypeArguments } from '@babel/types';
@@ -20,6 +21,7 @@ class Play extends React.Component {
             prompt: "",
             startTime: 0,
             endTime: 0,
+            rating: 2.5
         };
 
         this.submitPrompt = this.submitPrompt.bind(this);
@@ -33,6 +35,13 @@ class Play extends React.Component {
         });
     }
 
+    handleRating = (score) => {
+        console.log(score);
+        this.setState({
+            rating: score
+        })
+    }
+    
     render() {
         if(localStorage.getItem('roomID') == undefined) return <Redirect to = '/' />
         return (
@@ -54,7 +63,9 @@ class Play extends React.Component {
                     :
                     <div>
                         
-                        
+                        <div class = "ratings">
+                            <Ratings onSelectRating={this.handleRating}></Ratings>
+                        </div>
                     </div>
                 }
             </div>
