@@ -21,6 +21,7 @@ class App extends React.Component {
     render(){
         return (
             <Router>
+                <div className = 'top-border'> </div>
                 <Switch>
                     <Route exact path = '/' component = { Home } />
                     <Route exact path = '/create-room' render={(routeProps) => (
