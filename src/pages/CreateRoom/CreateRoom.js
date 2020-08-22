@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 
 import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
@@ -35,9 +36,12 @@ class CreateRoom extends React.Component {
             roomID: genKey(),
             numRounds: -1,
             currentPlayers: [],
+
+            readyToStart: false,
         };
 
         this.create = this.create.bind(this);
+        this.startGame = this.startGame.bind(this);
     }
 
     create() {
@@ -49,6 +53,13 @@ class CreateRoom extends React.Component {
         this.setState({
             numRounds: num_rounds,
             currentPlayers: curr,
+        });
+    }
+
+    startGame() {
+        localStorage.setItem("roomID", this.state.roomID);
+        this.setState({
+            readyToStart: true,
         });
     }
 
@@ -69,11 +80,16 @@ class CreateRoom extends React.Component {
                         <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '8vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
                             { roomIDText }
                         </p>
-                        <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '8vh', transform: 'translate(0,50%)' }}>
+                        <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '8vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
                             Start Game
                         </button>
                         <JoinedPlayers roomID = { this.state.roomID } />
                     </div>
+                }
+                {
+                    this.state.readyToStart?
+                    <Redirect to = '/play' />
+                    :null
                 }
             </div>
         );

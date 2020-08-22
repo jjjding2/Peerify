@@ -12,3 +12,11 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+.top-border {
+    position: fixed;
+    width: 100vw;
+    height: 1vh;
+    top: 0%;
+    background-image: linear-gradient(to right, rgba(29,133,224), rgba(29,221,224));
+}

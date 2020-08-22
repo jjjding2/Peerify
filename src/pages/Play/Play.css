@@ -1,0 +1,58 @@
+.prompt {
+    position: fixed;
+    width: 90vw;
+    height: 8vh;
+
+    top: 7vh;
+    left: 5vw;
+
+    box-sizing: border-box;
+    padding-left: 1%;
+    border: 0px solid transparent;
+
+    font-size: 2.5vh;
+    font-family: 'OpenSans-Light';
+
+    background: rgba(240,240,240);
+}
+
+.prompt-submit {
+    position: fixed;
+    height: 5vh;
+    width: 7vw;
+    right: 5vw;
+    top: 17vh;
+
+    box-sizing: border-box;
+    border: 0px solid transparent;
+    background: transparent;
+
+    font-size: 2vh;
+    font-family: 'OpenSans-Light';
+
+    cursor: pointer;
+    z-index: 2;
+}
+
+.bottom-bar {
+    display: block;
+    height: 100%;
+    width: 100%;
+    /* z-index: 2; */
+    position: relative;
+}
+
+.bottom-bar:after{
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 5%;
+    background-image: linear-gradient(to right, rgba(29,133,224), rgba(29,221,224));
+    transition: .3s;
+}
+
+.bottom-bar:hover:after{
+    width: 100%;
+}
