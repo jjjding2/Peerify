@@ -1,7 +1,7 @@
 .enter-room-code {
     width: 15vw;
     height: 15vh;
-    background: rgba(200,200,200,0.5);
+    background: transparent;
     position: fixed;
     top: 50vh;
     left: 50vw;
@@ -26,7 +26,7 @@
     height: 50%;
     top: 50%;
 
-    background: transparent;
+    background: rgba(200,200,200,0.5);
     box-sizing:border-box;
     border: 0px solid transparent;
 
