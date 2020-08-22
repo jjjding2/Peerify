@@ -95,3 +95,17 @@
 .user-response:focus {
     outline: 1px solid rgb(0,152,240);
 }
+
+.image-container{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.waiting-image{
+    text-align: center;
+    height: 50vh;
+    bottom: -1000px;
+    background: url('../../images/waiting-image.png') no-repeat center center / contain;
+}
