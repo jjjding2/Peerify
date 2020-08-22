@@ -8,6 +8,7 @@ import Play from './pages/Play/Play';
 
 import './App.css';
 import socket from './socket';
+import Ratings from './components/Ratings/Ratings';
 
 class App extends React.Component {
     constructor(props) {

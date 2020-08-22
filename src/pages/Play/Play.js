@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Redirect } from 'react-router-dom';
+import Ratings from '../../components/Ratings/Ratings';
 
 import './Play.css';
 
@@ -21,6 +22,7 @@ class Play extends React.Component {
 
             userResponse: localStorage.getItem('user-response') == undefined?"":localStorage.getItem('user-response'),
             characterUpdateCount: 0,
+            rating: 2.5
         };
 
         this.submitPrompt = this.submitPrompt.bind(this);
@@ -55,6 +57,13 @@ class Play extends React.Component {
         this.forceUpdate();
     }
 
+    handleRating = (score) => {
+        console.log(score);
+        this.setState({
+            rating: score
+        })
+    }
+    
     render() {
         if(localStorage.getItem('roomID') == undefined) return <Redirect to = '/' />
 
