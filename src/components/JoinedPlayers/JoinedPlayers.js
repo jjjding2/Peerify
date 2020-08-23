@@ -61,8 +61,11 @@ class JoinedPlayers extends React.Component {
         // console.log(this.state.currentPlayers);
 
         return (
-            <div className = 'parent-div'>
-                { players }
+            <div>
+                <div className = 'background-image'></div>
+                <div className = 'parent-div'>
+                    { players }
+                </div>
             </div>
         );
     }

@@ -5,7 +5,8 @@ import { Redirect } from 'react-router-dom';
 import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
 import socket from '../../socket';
 import BackButton from '../../components/BackButton/BackButton';
-import { kMaxLength } from 'buffer';
+
+import './WaitingRoom.css';
 
 class WaitingRoom extends React.Component {
     constructor(props) {
@@ -46,9 +47,12 @@ class WaitingRoom extends React.Component {
                 </p>
                 { 
                     this.state.userID == this.state.leader ?
-                    <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '10vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
-                        Start Game
-                    </button>
+                    <div className = 'start-button'  style = {{ position: 'fixed', right: '4vw', top: '10vh', transform: 'translate(0,50%)' }}>
+                        <button className = 'start-button' onClick = { this.startGame }>
+                            Start Game
+                        </button>
+                        <div className = 'bottom-bar' style = {{ cursor: 'pointer' }} onClick = { this.startGame }> </div>
+                    </div>
                     :null
                 }
                 <JoinedPlayers roomID = { this.state.roomID } />

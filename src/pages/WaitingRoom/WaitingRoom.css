@@ -1,0 +1,7 @@
+.start-button {
+    border: none;
+    outline: none;
+    position: fixed;
+    background: transparent;
+    font-size: 2.5vh;
+}
