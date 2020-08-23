@@ -17,9 +17,8 @@ function trimText(str) {
 class Play extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            isLeader: true,
+            isLeader: localStorage.getItem('leaderID') == localStorage.getItem('userID'),
             startTime: 0,
             endTime: 0,
 
@@ -38,14 +37,13 @@ class Play extends React.Component {
         this.evaluationChange = this.evaluationChange.bind(this);
         this.nextRound = this.nextRound.bind(this);
         this.updateRating = this.updateRating.bind(this);
+        
+        if (this.state.isLeader) {
+            socket.emit('promptStage', localStorage.getItem('roomID'));
+        }
     }
 
     componentDidMount() {
-        socket.on('start', leader => {
-            localStorage.setItem('leaderID', leader);
-            console.log(localStorage.getItem('userID')+" "+leader);
-            this.setState({ isLeader : (leader == localStorage.getItem('userID'))});
-        });
 
         socket.on('finishPrompt', () => {
             if(this.state.isLeader && localStorage.getItem('prompt') == undefined){

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
 import BackButton from '../../components/BackButton/BackButton';
 
 import './CreateRoom.css';
@@ -25,6 +24,11 @@ class CreateRoom extends React.Component {
         this.create = this.create.bind(this);
     }
 
+    componentDidMount() {
+        const { userID } = this.props.location.state;
+        this.setState({ userID });
+    }
+
     create() {
         let owner_nick = trimText(document.getElementById('owner-nickname').value);
         let num_rounds = document.getElementById('num-rounds').value;
@@ -43,7 +47,6 @@ class CreateRoom extends React.Component {
     }
 
     render() {
-        const roomIDText = "Room ID: " + this.state.roomID;
         return (
             <div>
                 {
@@ -60,6 +63,7 @@ class CreateRoom extends React.Component {
                     <Redirect to = {{
                         pathname: '/waiting',
                         state: {
+                            userID: this.state.userID,
                             roomID: this.state.roomID,
                         }
                     }} />
