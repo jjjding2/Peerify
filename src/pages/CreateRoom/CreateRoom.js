@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
-import Navbar from '../../components/Navbar/Navbar';
+import BackButton from '../../components/BackButton/BackButton';
 
 import './CreateRoom.css';
 
@@ -12,14 +12,6 @@ function trimText(str) {
     while(str.length > 0 && str[0] == ' ') str = str.substring(1);
     while(str.length > 0 && str[str.length-1] == ' ') str = str.substring(0,str.length-1);
     return str;
-}
-
-function clearLocalStorage() {
-    localStorage.removeItem('prompt');
-    localStorage.removeItem('user-response');
-    localStorage.removeItem('user-evaluation');
-    localStorage.removeItem('response-ready');
-    localStorage.removeItem('evaluation-ready');
 }
 
 class CreateRoom extends React.Component {
@@ -43,8 +35,6 @@ class CreateRoom extends React.Component {
         let num_rounds = document.getElementById('num-rounds').value;
         if(owner_nick == "" || num_rounds == "") return;
 
-        console.log(localStorage.getItem('userID'));
-
         socket.emit('createRoom', localStorage.getItem('userID'), num_rounds);
         socket.on('sendRoomId', roomID => {
             // localStorage.setItem('roomID', roomID);
@@ -61,7 +51,7 @@ class CreateRoom extends React.Component {
 
     startGame() {
         localStorage.setItem("roomID", this.state.roomID);
-        clearLocalStorage();
+        global.clearLocalStorage();
         this.setState({
             readyToStart: true,
         });
@@ -73,20 +63,22 @@ class CreateRoom extends React.Component {
         const roomIDText = "Room ID: " + this.state.roomID;
         return (
             <div>
-                <Navbar />
                 {
                     this.state.numRounds == -1?
-                    <div className = 'enter-room-code'>
-                        <input id = 'owner-nickname' className = 'enter-code-box' placeholder = 'Nickname' />
-                        <input id = 'num-rounds' className = 'enter-code-box' style = {{ top: '50%' }} type = 'number' placeholder = '# Rounds' />
-                        <button className = 'confirm-join-button' style = {{ top: '100%' }} onClick = { this.create }> Create </button>
+                    <div>
+                        <BackButton />
+                        <div className = 'enter-room-code'>
+                            <input id = 'owner-nickname' className = 'enter-code-box' placeholder = 'Nickname' />
+                            <input id = 'num-rounds' className = 'enter-code-box' style = {{ top: '50%' }} type = 'number' placeholder = '# Rounds' />
+                            <button className = 'confirm-join-button' style = {{ top: '100%' }} onClick = { this.create }> Create </button>
+                        </div>
                     </div>
                     :
                     <div>
-                        <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '8vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
+                        <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '6vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
                             Room ID: { this.state.roomID }
                         </p>
-                        <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '8vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
+                        <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '6vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
                             Start Game
                         </button>
                         <JoinedPlayers roomID = { this.state.roomID } />

@@ -1,8 +1,12 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
+<<<<<<< HEAD
 import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
 import Navbar from '../../components/Navbar/Navbar';
+=======
+import BackButton from '../../components/BackButton/BackButton';
+>>>>>>> f1916f63d27c14c8953f921a103dbd9774c35dfb
 
 import socket from '../../socket';
 
@@ -32,8 +36,12 @@ class JoinRoom extends React.Component {
     render() {
         return (
             <div>
+<<<<<<< HEAD
                 <Navbar />
                 { !this.state.joinedRoom ?
+=======
+                <BackButton />
+>>>>>>> f1916f63d27c14c8953f921a103dbd9774c35dfb
                 <div className = 'enter-room-code'>
                     <input id='roomID' className = 'enter-code-box' placeholder = 'Enter Room ID' />
                     <button className = 'confirm-join-button' onClick={this.joinRoom}> Join </button>

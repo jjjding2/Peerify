@@ -1,9 +1,10 @@
 .title{
-    display:flex;
-    justify-content:center;
-    font-size:100px;
-    z-index:9999;
-    position: relative;
+    position: fixed;
+    font-family: 'Montserrat-Bold';
+    font-size: 10vh;
+    z-index: 3;
+    left: 5vw;
+    /* transform: translate(-50%,0); */
 }
 
 .button {
@@ -40,10 +41,12 @@ p:hover {
 
 .main-background {
     position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 1vh;
-    background: url('../../images/homepage.png') no-repeat center center / contain;
+    width: 110vw;
+    height: 110vh;
+    top: -1vh;
+    left: 57vw;
+    transform: translate(-50%,0);
+    background: url('../../images/homepage-flipped.png') no-repeat center center / contain;
 }
 
 .bottom-bar {

@@ -35,6 +35,8 @@ class Play extends React.Component {
         this.submitResponse = this.submitResponse.bind(this);
         this.responseChange = this.responseChange.bind(this);
         this.evaluationChange = this.evaluationChange.bind(this);
+        this.nextRound = this.nextRound.bind(this);
+        this.updateRating = this.updateRating.bind(this);
     }
 
     componentDidMount() {
@@ -64,8 +66,8 @@ class Play extends React.Component {
         });
 
         socket.on('evaluation', entry => {
-            console.log(entry.text);
             localStorage.setItem('evaluation', entry.text);
+            localStorage.setItem('evaluation-ready', true);
             this.forceUpdate();
         });
 
@@ -76,7 +78,31 @@ class Play extends React.Component {
         });
 
         socket.on('allEvaluated', () => {
+            if(this.state.isLeader){
+                socket.emit('feedbackStage', localStorage.getItem("roomID"));
+            }
+            socket.emit('getFeedback', localStorage.getItem('userID'), localStorage.getItem('roomID'));
+        });
 
+        socket.on('feedback', entry => {
+            localStorage.setItem('feedback', entry.text);
+            localStorage.setItem('feedback-rating', entry.rating);
+            localStorage.setItem('feedback-ready', true);
+            this.forceUpdate();
+        });
+
+        socket.on('finishFeedback', newLeader => {
+            if(localStorage.getItem('ready_next_game') == undefined){
+                this.nextRound();
+            }
+            this.setState({
+                isLeader: (localStorage.get('userID') == newLeader),
+            });
+        });
+
+        socket.on('allReadyNextGame', () => {
+            global.clearLocalStorage();
+            this.forceUpdate();
         });
     }
 
@@ -129,11 +155,17 @@ class Play extends React.Component {
         this.forceUpdate();
     }
 
-    handleRating = (score) => {
-        console.log(score);
+    updateRating(val) {
         this.setState({
-            rating: score
+            rating: val,
         })
+    }
+
+    nextRound() {
+        global.clearLocalStorage();
+        localStorage.setItem('ready_next_game', true);
+        socket.emit('sendReadyNextRound', localStorage.getItem('userID'));
+        this.forceUpdate();
     }
     
     render() {
@@ -190,12 +222,26 @@ class Play extends React.Component {
                             </div>
                         </div>
                     }else{
-                        
-                        component =
-                        <div>
-                        <h1 className = 'page-header'> Waiting for other players to finish... </h1>
-                        
-                        </div>
+                        if(localStorage.getItem('feedback-ready') == undefined){
+                            component =
+                            <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                        }else{
+                            if(localStorage.getItem('ready_next_game') == undefined){
+                                component =
+                                <div>
+                                    <h1 className = 'page-header'> Your feedback is: </h1>
+                                    <textarea className = 'user-response' readonly = 'true' style = {{ top: '20vh', height: '40vh' }} value = { localStorage.getItem('feedback') } />
+                                    <Ratings selectedRating = { localStorage.getItem('feedback-rating') } top = '63vh' left = '5vw' />
+                                    <div className = 'prompt-submit' style = {{ top: '63vh' }}>
+                                        <button className = 'prompt-submit' style = {{ top: '63vh' }}> Continue </button>
+                                        <div className = 'bottom-bar' onClick = { () => this.nextRound() }> </div>
+                                    </div>
+                                </div>
+                            }else{
+                                component =
+                                <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                            }
+                        }
                     }
                 }
             }

@@ -8,7 +8,24 @@ import Play from './pages/Play/Play';
 
 import './App.css';
 import socket from './socket';
-import Ratings from './components/Ratings/Ratings';
+
+global.clearLocalStorage = function() {
+    localStorage.removeItem('prompt');
+    
+    localStorage.removeItem('user-response');
+    localStorage.removeItem('user-evaluation');
+
+    localStorage.removeItem('evaluation');
+    localStorage.removeItem('feedback');
+
+    localStorage.removeItem('response-ready');
+    localStorage.removeItem('evaluation-ready');
+    localStorage.removeItem('feedback-ready');
+
+    localStorage.removeItem('feedback-rating');
+
+    localStorage.removeItem('ready_next_game');
+}
 
 class App extends React.Component {
     constructor(props) {
