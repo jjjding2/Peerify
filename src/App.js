@@ -31,10 +31,6 @@ global.clearLocalStorage = function() {
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
-        socket.on('createId', (id) => {
-            localStorage.setItem('userID', id);
-        });
     }
 
     render(){

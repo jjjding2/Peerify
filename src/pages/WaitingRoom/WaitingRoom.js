@@ -14,15 +14,12 @@ class WaitingRoom extends React.Component {
         console.log(props);
 
         this.state = {
+            userID: props.location.state.userID,
             roomID: props.location.state.roomID,
+            leader: props.location.state.leader,
 
             readyToStart: false,
-        }
-    }
-
-    componentDidMount() {
-        const { userID, roomID, leader } = this.props.location.state;
-        this.setState({ userID, roomID, leader });
+        };
     }
 
     startGame = () => {
@@ -34,6 +31,7 @@ class WaitingRoom extends React.Component {
     }
 
     render() {
+        if(this.state.userID == undefined) return <Redirect to = '/' />
         return (
             <div>
                 <BackButton />

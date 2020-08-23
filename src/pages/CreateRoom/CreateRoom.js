@@ -14,22 +14,22 @@ function trimText(str) {
 }
 
 class CreateRoom extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             userID: null,
             roomID: null,
             numRounds: -1
-         };
-        //roomID, numRounds
+        };
+        
+        socket.emit('createId');
+        socket.on('getId', id => {
+            this.state.userID = id;
+            console.log("MY ID IS " + id);
+        });
 
         this.create = this.create.bind(this);
-    }
-
-    componentDidMount() {
-        const { userID } = this.props.location.state;
-        this.setState({ userID });
     }
 
     create() {
@@ -37,10 +37,10 @@ class CreateRoom extends React.Component {
         let num_rounds = document.getElementById('num-rounds').value;
         if(owner_nick == "" || num_rounds == "") return;
 
-        socket.emit('createRoom', this.state.userID, num_rounds);
+        socket.emit('createRoom', this.state.userID, owner_nick, num_rounds);
         socket.on('sendRoomId', roomID => {
             this.setState({ roomID, numRounds: num_rounds });
-            socket.emit('setNickname', this.state.userID, this.state.roomID, owner_nick);
+            socket.emit('setNickname', this.state.userID, roomID, owner_nick);
         });
     }
 

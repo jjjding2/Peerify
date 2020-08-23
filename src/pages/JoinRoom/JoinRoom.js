@@ -55,7 +55,7 @@ class JoinRoom extends React.Component {
                 <div className = 'enter-room-code'>
                     <input id = 'room-code' className = 'enter-code-box' placeholder = 'Enter Room ID' />
                     <input id = 'nickname' className = 'enter-code-box' style = {{ top: '50%' }} placeholder = 'Nickname' />
-                    <button className = 'confirm-join-button' style = {{ top: '100%' }} onClick = { this.joinRoom }> Create </button>
+                    <button className = 'confirm-join-button' style = {{ top: '100%' }} onClick = { this.joinRoom }> Join </button>
                 </div>
                 {
                     this.state.roomID != 0?

@@ -10,19 +10,26 @@ class JoinedPlayers extends React.Component {
         super(props);
 
         this.state = {
-            roomID: this.props.roomID,
+            roomID: props.roomID,
             currentPlayers: [],
         };
 
-        console.log("ROOM ID"+this.props.roomID);
-        socket.emit('getRoomList', this.props.roomID);
+        // console.log("ROOM ID " + props.roomID);
+        socket.emit('getRoomList', props.roomID);
+    }
+
+    componentDidMount() {
         socket.on('roomList', data => {
             let nick_list = [];
-            for(let key in data)
+            console.log("gETTING ROOM LIST");
+            for(let key in data){
+                console.log(key);
                 nick_list.push(data[key]);
+            }
             this.state.currentPlayers = nick_list;
-            console.log("DAB");
-            console.log(data);
+            this.forceUpdate();
+            // console.log("DAB");
+            // console.log(data);
         });
 
         socket.on('playerJoined', userNick => {
@@ -37,22 +44,23 @@ class JoinedPlayers extends React.Component {
 
     render() {
         let players = [], per_row = 5, gap = 1, each_wid = (100-(per_row+1)*gap)/per_row;
-        console.log(each_wid);
+        // console.log(each_wid);
         let top_value = 3, left_value = 0;
-        for(let name in this.state.currentPlayers){
+        for(let i=0; i<this.state.currentPlayers.length; i++){
+            let name = this.state.currentPlayers[i];
             if(left_value+gap+each_wid > 100){
                 top_value += 17;
                 left_value = gap;
             }else left_value += gap;
             players.push(
-                <div className = 'user-entry' style = {{ width: each_wid + '%', top: top_value + '%', left: left_value + '%' }}>
+                <div key = { top_value + " " + left_value } className = 'user-entry' style = {{ width: each_wid + '%', top: top_value + '%', left: left_value + '%' }}>
                     <h1> { name } </h1>
                 </div>
             );
             left_value += each_wid;
         }
-        console.log("OK")
-        console.log(this.state.currentPlayers);
+        // console.log("OK")
+        // console.log(this.state.currentPlayers);
 
         return (
             <div className = 'parent-div'>
