@@ -28,8 +28,11 @@ class Play extends React.Component {
             evalSubmitted: false,
             allEvalSubmitted: false,
             feedback: null,
-            readyNextRound: false,
+            doneFeedback: false,
+            allDoneFeedback: false,
             gameOver: false,
+
+            topUsers: [],
 
             rating: 2.5,
         };
@@ -115,9 +118,30 @@ class Play extends React.Component {
         });
 
         socket.on('finishFeedback', () => {
-            if(!this.state.readyNextRound){
-                this.nextRound();
+            if(!this.state.doneFeedback){
+                this.setState({ allDoneFeedback: true, doneFeedback: true });
             }
+            socket.emit('scoreboardStage', this.state.roomID);
+            if (this.state.userID == this.state.leader) {
+                socket.emit('getResults', this.state.roomID, 5);
+            }
+        });
+
+        socket.on('results', array => {
+            console.log("RESULTS GOTTEN");
+            this.setState({ topUsers: array });
+        });
+
+        socket.on('allDoneWithFeedback', () => {
+            this.setState({ allDoneFeedback: true, doneFeedback: true });
+            if (this.state.userID == this.state.leader){
+                socket.emit('scoreboardStage', this.state.roomID);
+                socket.emit('getResults', this.state.roomID, 5);
+            }
+        });
+
+        socket.on('scoreboardStageOver', () => {
+            socket.emit('sendReadyNextGame', this.state.roomID);
         });
 
         socket.on('allReadyNextGame', newLeader => {
@@ -131,7 +155,8 @@ class Play extends React.Component {
                 evalSubmitted: false,
                 allEvalSubmitted: false,
                 feedback: null,
-                readyNextRound: false,
+                doneFeedback: false,
+                allDoneFeedback: false,
 
                 rating: 2.5,
             });
@@ -146,7 +171,7 @@ class Play extends React.Component {
         this.submitEntry = this.submitEntry.bind(this);
         this.submitEval = this.submitEval.bind(this);
         this.updateRating = this.updateRating.bind(this);
-        this.nextRound = this.nextRound.bind(this);
+        this.doneFeedback = this.doneFeedback.bind(this);
     }
 
     submitPrompt() {
@@ -172,11 +197,10 @@ class Play extends React.Component {
         });
     }
 
-    nextRound() {
-        socket.emit('sendReadyNextGame', this.state.userID, this.state.roomID);
-        this.setState({
-            readyNextRound: true,
-        });
+    doneFeedback() {
+        this.setState({ doneFeedback: true });
+        console.log("ALLDONE FEEDBACK "+this.state.allDoneFeedback);
+        socket.emit('doneWithFeedback', this.state.roomID);
     }
     
     render() {
@@ -239,7 +263,7 @@ class Play extends React.Component {
                             component =
                             <Waiting></Waiting>
                         }else{
-                            if(!this.state.readyNextRound){
+                            if(!this.state.doneFeedback){
                                 component =
                                 <div>
                                     <h1 className = 'page-header'> Your feedback is: </h1>
@@ -247,12 +271,26 @@ class Play extends React.Component {
                                     <Ratings top = '63vh' left = '5vw' selectedRating = { this.state.rating } />
                                     <div className = 'prompt-submit' style = {{ top: '63vh' }}>
                                         <button className = 'prompt-submit' style = {{ top: '63vh' }}> Continue </button>
-                                        <div className = 'bottom-bar' onClick = { () => this.nextRound() }> </div>
+                                        <div className = 'bottom-bar' onClick = { () => this.doneFeedback() }> </div>
                                     </div>
                                 </div>
                             }else{
-                                component =
-                                <Waiting></Waiting>
+                                if (!this.state.allDoneFeedback) {
+                                    component =
+                                    <Waiting></Waiting>
+                                }else {
+                                    component = 
+                                    <div>
+                                        <h1 className = 'page-header'>Current Scoreboard</h1>
+                                        {
+                                            this.state.topUsers.map(function(user, idx) {
+                                                return (
+                                                    <h1>{user.name} {user.score}</h1>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                }
                             }
                         }
                     }

@@ -11,10 +11,22 @@ class Results extends React.Component {
 
         this.state = {
             roomID: props.location.state.roomID,
+            first: {
+                name: null,
+                score: null
+            },
+            second: {
+                name: null,
+                score: null,
+            },
+            third: {
+                name: null,
+                score: null
+            }
         }
 
-        socket.emit('getResults', this.state.roomID);
-        socket.on('results', (first, second, third) => {
+        socket.emit('getResults', this.state.roomID, 3);
+        socket.on('finalResults', (first, second, third) => {
             this.setState({ first, second, third });
         });
     }
@@ -25,13 +37,13 @@ class Results extends React.Component {
                 <BackButton />
                 <div style={{ width: '100%', height: '70%', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
                     <div className='silver' style={{ width: '10%', backgroundColor: '#DEDEDE', textAlign: 'center' }}>
-                        <h3 className='winner'>{ this.state.second }</h3>
+                        <h3 className='winner'>{ this.state.second.name }</h3>
                     </div>
                     <div className='gold' style={{ width: '10%', backgroundColor: '#F7D802', margin: '0 50px', textAlign: 'center' }}>
-                        <h3 className='winner'>{ this.state.first }</h3>
+                        <h3 className='winner'>{ this.state.first.name }</h3>
                     </div>
                     <div className='bronze' style={{ width: '10%', backgroundColor: '#C77B30', textAlign: 'center' }}>
-                        <h3 className='winner'>{ this.state.third }</h3>
+                        <h3 className='winner'>{ this.state.third.name }</h3>
                     </div>
                 </div>
             </div>
