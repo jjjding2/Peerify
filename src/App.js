@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import CreateRoom from './pages/CreateRoom/CreateRoom';
 import JoinRoom from './pages/JoinRoom/JoinRoom';
+import WaitingRoom from './pages/WaitingRoom/WaitingRoom';
 import Play from './pages/Play/Play';
 
 import './App.css';
@@ -44,6 +45,7 @@ class App extends React.Component {
                     <Route exact path = '/' component = { Home } />
                     <Route exact path = '/create-room' component = { CreateRoom } />
                     <Route exact path = '/join-room' component = { JoinRoom } />
+                    <Route exact path = '/waiting' component = { WaitingRoom } />
                     <Route exact path = '/play' component = { Play } />
                 </Switch>
             </Router>

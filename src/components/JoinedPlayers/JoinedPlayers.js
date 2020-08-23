@@ -1,7 +1,8 @@
 import React from 'react';
 
-import './JoinedPlayers.css';
 import socket from '../../socket';
+
+import './JoinedPlayers.css';
 
 class JoinedPlayers extends React.Component {
     constructor(props) {
@@ -9,21 +10,24 @@ class JoinedPlayers extends React.Component {
 
         this.state = {
             roomID: props.roomID,
-            userList: []
+            currentPlayers: [],
         };
-        
-        socket.on('updateList', userList => {
-            this.setState({ userList });
+
+        socket.on('playerJoined', userNick => {
+            let tt = this.state.currentPlayers;
+            tt.push(
+                <h1> { userNick } </h1>
+            );
+            this.setState({
+                currentPlayers: tt,
+            })
         });
-        console.log(this.state.userList);
     }
 
     render() {
         return (
             <div className = 'parent-div'>
-                { this.state.userList.map( (user) => {
-                    return <h3> { user } </h3>;
-                })}
+                { this.state.currentPlayers }
             </div>
         );
     }

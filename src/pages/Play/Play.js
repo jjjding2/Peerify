@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Redirect } from 'react-router-dom';
 import Ratings from '../../components/Ratings/Ratings';
+import Waiting from '../../components/Waiting/Waiting';
 
 import socket from '../../socket';
 
@@ -201,12 +202,7 @@ class Play extends React.Component {
             }else{
                 if(localStorage.getItem('evaluation') == undefined){
                     component =
-                    <div>
-                            <h1 className = 'page-header'> Waiting for other players to finish... </h1>
-                        <div className = 'image-container'>
-                            <div className = 'waiting-image'></div>
-                        </div>
-                    </div>
+                    <Waiting></Waiting>
                 }else{
                     if(localStorage.getItem('evaluation-ready') == undefined){
                         component =
@@ -237,7 +233,8 @@ class Play extends React.Component {
                                 </div>
                             }else{
                                 component =
-                                <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                                <Waiting></Waiting>
+
                             }
                         }
                     }
