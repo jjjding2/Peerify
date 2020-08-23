@@ -34,6 +34,11 @@ class JoinRoom extends React.Component {
         this.joinRoom = this.joinRoom.bind(this);
     }
 
+    componentDidMount() {
+        const { userID } = this.props.location.state;
+        this.setState({ userID });
+    }
+
     joinRoom() {
         let roomID = trimText(document.getElementById('room-code').value);
         let nickname = trimText(document.getElementById('nickname').value);

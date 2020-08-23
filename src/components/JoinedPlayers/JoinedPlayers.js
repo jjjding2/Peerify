@@ -10,11 +10,12 @@ class JoinedPlayers extends React.Component {
         super(props);
 
         this.state = {
-            roomID: props.roomID,
+            roomID: this.props.roomID,
             currentPlayers: [],
         };
 
-        socket.emit('getRoomList', props.roomID);
+        console.log("ROOM ID"+this.props.roomID);
+        socket.emit('getRoomList', this.props.roomID);
         socket.on('roomList', data => {
             let nick_list = [];
             for(let key in data)

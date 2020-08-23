@@ -18,16 +18,11 @@ class CreateRoom extends React.Component {
         super();
 
         this.state = {
-<<<<<<< HEAD
             userID: null,
             roomID: null,
             numRounds: -1
          };
         //roomID, numRounds
-=======
-            roomID: 0,
-        };
->>>>>>> 58bef022cafa862a3a6de7fc56e2437148399368
 
         this.create = this.create.bind(this);
     }
@@ -42,21 +37,10 @@ class CreateRoom extends React.Component {
         let num_rounds = document.getElementById('num-rounds').value;
         if(owner_nick == "" || num_rounds == "") return;
 
-        socket.emit('createRoom', localStorage.getItem('userID'), num_rounds);
-<<<<<<< HEAD
-        socket.emit('setNickname', localStorage.getItem('userID'), this.state.roomID, owner_nick);
+        socket.emit('createRoom', this.state.userID, num_rounds);
         socket.on('sendRoomId', roomID => {
             this.setState({ roomID, numRounds: num_rounds });
-=======
-        socket.on('sendRoomId', pp => {
-            // localStorage.setItem('roomID', roomID);
-            localStorage.setItem('roomID', pp);
-            socket.emit('setNickname', localStorage.getItem('userID'), pp, owner_nick);
-            this.setState({
-                roomID: pp
-            });
-            console.log(pp);
->>>>>>> 58bef022cafa862a3a6de7fc56e2437148399368
+            socket.emit('setNickname', this.state.userID, this.state.roomID, owner_nick);
         });
     }
 
@@ -64,7 +48,7 @@ class CreateRoom extends React.Component {
         return (
             <div>
                 {
-                    this.state.roomID == 0?
+                    this.state.roomID == null?
                     <div>
                         <BackButton />
                         <div className = 'enter-room-code'>
@@ -79,6 +63,7 @@ class CreateRoom extends React.Component {
                         state: {
                             userID: this.state.userID,
                             roomID: this.state.roomID,
+                            leader: this.state.userID
                         }
                     }} />
                 }
