@@ -98,6 +98,8 @@ class Play extends React.Component {
         });
 
         socket.on('feedback', feedback => {
+            let t = feedback.text, r = feedback.rating;
+            if(t == undefined) t = "";
             this.setState({ 
                 feedback: feedback.text,
                 rating: feedback.rating
