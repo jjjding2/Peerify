@@ -180,7 +180,14 @@ class Play extends React.Component {
     }
     
     render() {
-        if(this.state.gameOver) return <Redirect to = '/' />
+        if(this.state.gameOver) {
+            return <Redirect to = {{
+                pathname: '/results',
+                state: {
+                    roomID: this.state.roomID,
+                }
+            }} />
+        }
         let component = null;
 
         if(!this.state.promptSubmitted){

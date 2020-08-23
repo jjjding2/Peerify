@@ -6,9 +6,9 @@ import CreateRoom from './pages/CreateRoom/CreateRoom';
 import JoinRoom from './pages/JoinRoom/JoinRoom';
 import WaitingRoom from './pages/WaitingRoom/WaitingRoom';
 import Play from './pages/Play/Play';
+import Results from './pages/Results/Results';
 
 import './App.css';
-import socket from './socket';
 
 global.clearLocalStorage = function() {
     localStorage.removeItem('prompt');
@@ -43,6 +43,7 @@ class App extends React.Component {
                     <Route exact path = '/join-room' component = { JoinRoom } />
                     <Route exact path = '/waiting' component = { WaitingRoom } />
                     <Route exact path = '/play' component = { Play } />
+                    <Route exact path = '/results' component = { Results } />
                 </Switch>
             </Router>
         );
