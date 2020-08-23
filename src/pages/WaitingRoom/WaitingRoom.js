@@ -5,12 +5,16 @@ import { Redirect } from 'react-router-dom';
 import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
 import socket from '../../socket';
 import BackButton from '../../components/BackButton/BackButton';
+import { kMaxLength } from 'buffer';
 
 class WaitingRoom extends React.Component {
     constructor(props) {
         super(props);
 
+        console.log(props);
+
         this.state = {
+            roomID: props.location.state.roomID,
 
             readyToStart: false,
         }

@@ -18,11 +18,16 @@ class CreateRoom extends React.Component {
         super();
 
         this.state = {
+<<<<<<< HEAD
             userID: null,
             roomID: null,
             numRounds: -1
          };
         //roomID, numRounds
+=======
+            roomID: 0,
+        };
+>>>>>>> 58bef022cafa862a3a6de7fc56e2437148399368
 
         this.create = this.create.bind(this);
     }
@@ -38,9 +43,20 @@ class CreateRoom extends React.Component {
         if(owner_nick == "" || num_rounds == "") return;
 
         socket.emit('createRoom', localStorage.getItem('userID'), num_rounds);
+<<<<<<< HEAD
         socket.emit('setNickname', localStorage.getItem('userID'), this.state.roomID, owner_nick);
         socket.on('sendRoomId', roomID => {
             this.setState({ roomID, numRounds: num_rounds });
+=======
+        socket.on('sendRoomId', pp => {
+            // localStorage.setItem('roomID', roomID);
+            localStorage.setItem('roomID', pp);
+            socket.emit('setNickname', localStorage.getItem('userID'), pp, owner_nick);
+            this.setState({
+                roomID: pp
+            });
+            console.log(pp);
+>>>>>>> 58bef022cafa862a3a6de7fc56e2437148399368
         });
     }
 
@@ -48,7 +64,7 @@ class CreateRoom extends React.Component {
         return (
             <div>
                 {
-                    this.state.numRounds == -1?
+                    this.state.roomID == 0?
                     <div>
                         <BackButton />
                         <div className = 'enter-room-code'>
@@ -63,7 +79,6 @@ class CreateRoom extends React.Component {
                         state: {
                             userID: this.state.userID,
                             roomID: this.state.roomID,
-                            leader: this.state.userID,
                         }
                     }} />
                 }
