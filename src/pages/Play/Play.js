@@ -110,14 +110,19 @@ class Play extends React.Component {
         });
 
         socket.on('finishFeedback', newLeader => {
-            this.state.setState({ leader: newLeader });
             this.setState({
-                prompt: null,
-                entry: null,
+                leader: newLeader,
+                promptSubmitted: false,
+                entrySubmitted: false,
                 evalEntry: null,
-                evalFeedback: null,
-                evalRating: null,
+                allEntrySubmitted: false,
+                evalSubmitted: false,
+                allEvalSubmitted: false,
+                feedback: null,
+                rating: null,
             });
+            console.log(newLeader);
+            console.log(this.state.userID);
             if (this.state.userID == this.state.leader){
                 socket.emit('promptStage', this.state.roomID);
             }
