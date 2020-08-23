@@ -1,11 +1,11 @@
 .parent-div {
-    width: 70vw;
-    height: 55vh;
-    left: 15vw;
-    top: 40vh;
+    width: 92vw;
+    height: 65vh;
+    left: 4vw;
+    top: 25vh;
     position: fixed;
-    /* background: rgba(0,0,0,0.05); */
-    background: transparent;
+    background: rgb(220, 238, 243);
+    /* background: transparent; */
     border-radius: 10px;
 }
 
@@ -16,7 +16,8 @@
     top: 0vh;
     z-index: -1;
     left: -7vw;
-    background: url('../../images/purple-cloud.png') no-repeat center center / contain;
+    background: transparent;
+    /* background: url('../../images/purple-cloud.png') no-repeat center center / contain; */
 }
 
 .user-entry {
@@ -30,7 +31,8 @@
     background: transparent;
     border-radius: 8px;
     position: absolute;
-    color: white;
+    /* color: white; */
+    color: black;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

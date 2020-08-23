@@ -9,14 +9,13 @@
     border: none;
     outline: none;
 
-    top: 2vh;
+    top: 4vh;
     left: 2vw;
 
     font-size: 2.6vh;
     font-family: 'Montserrat-Bold';
     color: rgba(150,150,150);
     
-
     transition: 0.5s;
 }
 .back-button:hover{
