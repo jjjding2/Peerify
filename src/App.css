@@ -61,3 +61,18 @@ input[type=number] {
     background-image: linear-gradient(to right, rgba(29,133,224), rgba(29,221,224));
     z-index: 9999;
 }
+
+button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+textarea:focus {
+    outline: none;
+    box-shadow: none;
+}
