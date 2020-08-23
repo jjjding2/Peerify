@@ -26,7 +26,7 @@ class CreateRoom extends React.Component {
         socket.emit('createId');
         socket.on('getId', id => {
             this.state.userID = id;
-            // console.log("MY ID IS " + id);
+            console.log("MY ID IS " + id);
         });
 
         this.create = this.create.bind(this);

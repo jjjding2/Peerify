@@ -3,6 +3,7 @@
     font-family: 'Montserrat-Bold';
     font-size: 10vh;
     z-index: 3;
+    top: 3vh;
     left: 5vw;
     /* transform: translate(-50%,0); */
 }

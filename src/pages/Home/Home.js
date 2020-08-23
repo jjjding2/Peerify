@@ -19,7 +19,7 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                <h1 className = 'title'> Heading </h1>
+                <h1 className = 'title'> Peerable </h1>
                 <div className = 'main-background'>
                     <div className = 'button' style = {{ left: '24%', top: '44%' }}>
                         <div className = 'bottom-bar'>
