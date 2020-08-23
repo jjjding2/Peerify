@@ -14,7 +14,7 @@ class BackButton extends React.Component {
             <div>
                 <button className = 'back-button'>
                     <Link className = 'remove-styling-back' to = '/'>
-                        &lt; Back
+                        Back
                     </Link>
                 </button>
             </div>

@@ -42,12 +42,12 @@ class WaitingRoom extends React.Component {
         return (
             <div>
                 <BackButton />
-                <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '10vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
+                <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '13vh', fontSize: '3vh', fontFamily: 'Montserrat-Bold'}}>
                     Room ID: { this.state.roomID }
                 </p>
                 { 
                     this.state.userID == this.state.leader ?
-                    <div className = 'start-button'  style = {{ position: 'fixed', right: '4vw', top: '10vh', transform: 'translate(0,50%)' }}>
+                    <div className = 'start-button'  style = {{ position: 'fixed', right: '4vw', top: '12vh', transform: 'translate(0,50%)' }}>
                         <button className = 'start-button' onClick = { this.startGame }>
                             Start Game
                         </button>
