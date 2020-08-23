@@ -17,7 +17,11 @@ class CreateRoom extends React.Component {
     constructor() {
         super();
 
-        this.state = {};
+        this.state = {
+            userID: null,
+            roomID: null,
+            numRounds: -1
+         };
         //roomID, numRounds
 
         this.create = this.create.bind(this);
@@ -36,10 +40,8 @@ class CreateRoom extends React.Component {
         socket.emit('createRoom', localStorage.getItem('userID'), num_rounds);
         socket.emit('setNickname', localStorage.getItem('userID'), this.state.roomID, owner_nick);
         socket.on('sendRoomId', roomID => {
-            this.setState({ roomID: roomID });
+            this.setState({ roomID, numRounds: num_rounds });
         });
-
-        this.setState({ numRounds: num_rounds });
     }
 
     render() {

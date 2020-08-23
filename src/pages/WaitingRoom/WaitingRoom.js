@@ -14,9 +14,6 @@ class WaitingRoom extends React.Component {
 
             readyToStart: false,
         }
-        socket.on('start', leader => {
-            this.setState({ readyToStart: true, leader });
-        });
     }
 
     componentDidMount() {
@@ -25,7 +22,11 @@ class WaitingRoom extends React.Component {
     }
 
     startGame = () => {
+        console.log("START");
         socket.emit('startGame', this.state.roomID);
+        socket.on('start', leader => {
+            this.setState({ readyToStart: true, leader });
+        });
     }
 
     render() {

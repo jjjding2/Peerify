@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import './Home.css';
 
+import socket from '../../socket';
+
 class Home extends React.Component {
     constructor() {
         super();

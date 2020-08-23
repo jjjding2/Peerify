@@ -18,168 +18,140 @@ class Play extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLeader: localStorage.getItem('leaderID') == localStorage.getItem('userID'),
-            startTime: 0,
-            endTime: 0,
-
-            userResponse: localStorage.getItem('user-response') == undefined?"":localStorage.getItem('user-response'),
-            characterUpdateCount: 0,
-
-            userEvaluation: "",
-            evaluationCharacterUpdateCount: 0,
-
-            rating: 2.5,
+            promptSubmitted: false,
+            entrySubmitted: false,
+            evalEntry: null,
+            allEntrySubmitted: false,
+            evalSubmitted: false,
+            allEvalSubmitted: false,
+            feedback: null,
+            rating: null,
         };
 
         this.submitPrompt = this.submitPrompt.bind(this);
-        this.submitResponse = this.submitResponse.bind(this);
-        this.responseChange = this.responseChange.bind(this);
-        this.evaluationChange = this.evaluationChange.bind(this);
-        this.nextRound = this.nextRound.bind(this);
-        this.updateRating = this.updateRating.bind(this);
-        
-        if (this.state.isLeader) {
-            socket.emit('promptStage', localStorage.getItem('roomID'));
-        }
+        this.submitEntry = this.submitEntry.bind(this);
+        this.submitEval = this.submitEval.bind(this);
+    
     }
 
     componentDidMount() {
 
+        const { userID, roomID, leader } = this.props.location.state;
+        this.setState({ userID, roomID, leader });
+
+        if (this.state.userID == this.state.leader ) {
+            socket.emit('promptStage', this.state.roomID);
+        }
+
         socket.on('finishPrompt', () => {
-            if(this.state.isLeader && localStorage.getItem('prompt') == undefined){
-                this.submitPrompt(true);
+            if (this.state.userID == this.state.leader) {
+                if (!this.state.promptSubmitted){
+                    this.setState({ promptSubmitted: true });
+                    socket.emit('writingStage', this.state.roomID, document.getElementById('prompt').value);
+                }
             }
+        });
+
+        socket.on('prompt', prompt => {
+            this.setState({ prompt });
         });
 
         socket.on('finishWriting', () => {
-            if(localStorage.getItem('response-ready') == undefined){
-                this.submitResponse(true);
+            if (!this.state.entrySubmitted) {
+                this.setState({ entrySubmitted: true });
+                socket.emit('sendText', this.state.userID, this.state.roomID, document.getElementById('user-response').value);
             }
+            this.setState({ allEntrySubmitted: true });
         });
 
         socket.on('allSubmitted', () => {
-            if(this.state.isLeader){
-                socket.emit('evaluationStage', localStorage.getItem("roomID"));
+            this.setState({ allEntrySubmitted: true });
+            socket.emit('getEvaluation', this.state.userID, this.state.roomID);
+            if(this.state.userID == this.state.leader){
+                socket.emit('evaluationStage', this.state.RoomID);
             }
-            socket.emit('getEvaluation', localStorage.getItem('userID'), localStorage.getItem('roomID'));
         });
 
-        socket.on('evaluation', entry => {
-            localStorage.setItem('evaluation', entry.text);
-            localStorage.setItem('evaluation-ready', true);
-            this.forceUpdate();
+        socket.on('evaluation', evalEntry => {
+            console.log("eval entry "+evalEntry);
+            this.setState({ evalEntry });
+            if (this.state.userID == this.state.leader) {
+                socket.emit('evaluationStage', this.state.roomID);
+            }
         });
 
         socket.on('finishEvaluation', () => {
-            if(localStorage.getItem('evaluation-ready') == undefined){
-                this.submitEvaluation();
+            if (!this.state.evalSubmitted){
+                this.setState({ evalSubmitted: true });
+                socket.emit('sendEvaluation', this.state.userID, this.state.roomID, document.getElementById('user-evaluation').value, this.state.evalRating)
             }
+            this.setState({ allEvalSubmitted: true });
         });
 
         socket.on('allEvaluated', () => {
-            if(this.state.isLeader){
-                socket.emit('feedbackStage', localStorage.getItem("roomID"));
+            this.setState({ allEvalSubmitted: true });
+            socket.emit('getFeedback', this.state.userID, this.state.roomID);
+            socket.emit('getScore', this.state.userID, this.state.roomID);
+            if(this.state.userID == this.state.leader){
+                socket.emit('feedbackStage', this.state.roomID);
             }
-            socket.emit('getFeedback', localStorage.getItem('userID'), localStorage.getItem('roomID'));
         });
 
-        socket.on('feedback', entry => {
-            localStorage.setItem('feedback', entry.text);
-            localStorage.setItem('feedback-rating', entry.rating);
-            localStorage.setItem('feedback-ready', true);
-            this.forceUpdate();
+        socket.on('feedback', feedback => {
+            this.setState({ feedback: feedback.text, rating: feedback.rating });
+        });
+
+        socket.on('score', score => {
+            this.setState({ score });
+        });
+
+        socket.on('gameOver', () => { //implement later
+
         });
 
         socket.on('finishFeedback', newLeader => {
-            if(localStorage.getItem('ready_next_game') == undefined){
-                this.nextRound();
-            }
+            this.state.setState({ leader: newLeader });
             this.setState({
-                isLeader: (localStorage.get('userID') == newLeader),
+                prompt: null,
+                entry: null,
+                evalEntry: null,
+                evalFeedback: null,
+                evalRating: null,
             });
-        });
-
-        socket.on('allReadyNextGame', () => {
-            global.clearLocalStorage();
-            this.forceUpdate();
+            if (this.state.userID == this.state.leader){
+                socket.emit('promptStage', this.state.roomID);
+            }
         });
     }
 
-    evaluationChange(e) {
-        let t = this.state.evaluationCharacterUpdateCount+1;
-        if(t == 20){
-            localStorage.setItem('user-evaluation', e);
-            t = 0;
-        }
-        this.setState({
-            userEvaluation: e,
-            evaluationCharacterUpdateCount: t,
-        });
+    submitPrompt() {
+        this.setState({ promptSubmitted: true });
+        this.setState({ prompt: document.getElementById('prompt').value });
+        console.log(document.getElementById('prompt').value);
+        socket.emit('writingStage', this.state.roomID, document.getElementById('prompt').value);
     }
 
-    responseChange(e) {
-        let t = this.state.characterUpdateCount+1;
-        if(t == 20){
-            localStorage.setItem('user-response', e);
-            t = 0;
-        }
-        this.setState({
-            userResponse: e,
-            characterUpdateCount: t,
-        });
+    submitEntry() {
+        this.setState({ entrySubmitted: true });
+        socket.emit('sendText', this.state.userID, this.state.roomID, document.getElementById('user-response').value );
     }
 
-    submitPrompt(forceSubmit) {
-        let pp = trimText(document.getElementById('prompt').value);
-        if(pp == "" && forceSubmit == false) return;
-        localStorage.setItem('prompt', pp);
-        socket.emit('writingStage', localStorage.getItem('roomID'), pp );
-        this.forceUpdate();
-    }
-
-    submitResponse(forceSubmit) {
-        let pp = trimText(document.getElementById('user-response').value);
-        if(pp == "" && forceSubmit == false) return;
-        localStorage.setItem('user-response', pp);
-        localStorage.setItem('response-ready', true);
-        socket.emit('sendText', localStorage.getItem('userID'), localStorage.getItem('roomID'), pp );
-        this.forceUpdate();
-    }
-
-    submitEvaluation() {
-        let pp = trimText(document.getElementById('user-evaluation').value);
-        localStorage.setItem('user-evaluation', pp);
-        localStorage.setItem('evaluation-ready', true);
-        socket.emit('sendEvaluation', localStorage.getItem('userID'), localStorage.getItem('roomID'), pp, this.state.rating )
-        this.forceUpdate();
-    }
-
-    updateRating(val) {
-        this.setState({
-            rating: val,
-        })
-    }
-
-    nextRound() {
-        global.clearLocalStorage();
-        localStorage.setItem('ready_next_game', true);
-        socket.emit('sendReadyNextRound', localStorage.getItem('userID'));
-        this.forceUpdate();
+    submitEval() {
+        this.setState({ evalSubmitted: true });
+        socket.emit('sendEvaluation', this.state.userID, this.state.roomID, document.getElementById('user-evaluation').value, 3);
     }
     
     render() {
-        if(localStorage.getItem('roomID') == undefined) return <Redirect to = '/' />
-
         let component = null;
 
-        if(localStorage.getItem('prompt') == undefined){
-            if(this.state.isLeader){
+        if(!this.state.promptSubmitted){
+            if(this.state.userID == this.state.leader){
                 component = 
                 <div>
                     <input id = 'prompt' className = 'prompt' placeholder = 'Enter your prompt.' />
                     <div className = 'prompt-submit'>
                         <button className = 'prompt-submit'> Submit </button>
-                        <div className = 'bottom-bar' onClick = { () => this.submitPrompt(false) }> </div>
+                        <div className = 'bottom-bar' onClick = { () => this.submitPrompt() }> </div>
                     </div>
                 </div>
             }else{
@@ -189,53 +161,44 @@ class Play extends React.Component {
                 </div>
             }
         }else{
-            if(localStorage.getItem('response-ready') == undefined){
+            if(!this.state.entrySubmitted){
                 component =
                 <div>
-                    <h1 className = 'page-header'> { "Your prompt is: " + localStorage.getItem('prompt') } </h1>
-                    <textarea id = 'user-response' className = 'user-response' placeholder = 'Enter your response!' value = { this.state.userResponse } onChange = { e => this.responseChange(e.target.value) } />
+                    <h1 className = 'page-header'> { "Your prompt is: " + this.state.prompt } </h1>
+                    <textarea id = 'user-response' className = 'user-response' placeholder = 'Enter your response!' />
                     <div className = 'prompt-submit' style = {{ top: '83vh' }}>
                         <button className = 'prompt-submit' style = {{ top: '83vh' }}> Submit </button>
-                        <div className = 'bottom-bar' onClick = { () => this.submitResponse(false) }> </div>
+                        <div className = 'bottom-bar' onClick = { () => this.submitEntry() }> </div>
                     </div>
                 </div>
             }else{
-                if(localStorage.getItem('evaluation') == undefined){
+                if(!this.state.allEntrySubmitted){
                     component =
                     <Waiting></Waiting>
                 }else{
-                    if(localStorage.getItem('evaluation-ready') == undefined){
+                    if(!this.state.evalSubmitted){
                         component =
                         <div>
                             <h1 className = 'page-header'> Your partner's response was: </h1>
-                            <textarea className = 'user-response' readonly = 'true' style = {{ top: '20vh', height: '25vh' }} value = { localStorage.getItem('evaluation') } />
-                            <textarea id = 'user-evaluation' className = 'user-response' style = {{ top: '48vh', height: '30vh' }} placeholder = 'Any advice/thoughts?' value = { this.state.userEvaluation } onChange = { e => this.evaluationChange(e.target.value) } />
+                            <textarea className = 'user-response' readOnly = {true} style = {{ top: '20vh', height: '25vh' }} value={this.state.evalEntry}/>
+                            <textarea id = 'user-evaluation' className = 'user-response' style = {{ top: '48vh', height: '30vh' }} placeholder = 'Any advice/thoughts?' />
                             <div className = 'prompt-submit' style = {{ top: '90vh' }}>
                                 <button className = 'prompt-submit' style = {{ top: '90vh' }}> Submit </button>
-                                <div className = 'bottom-bar' onClick = { () => this.submitEvaluation() }> </div>
+                                <div className = 'bottom-bar' onClick = { () => this.submitEval() }> </div>
                             </div>
                         </div>
                     }else{
-                        if(localStorage.getItem('feedback-ready') == undefined){
+                        if(!this.state.allEvalSubmitted){
                             component =
                             <h1 className = 'page-header'> Waiting for other players to finish... </h1>
                         }else{
-                            if(localStorage.getItem('ready_next_game') == undefined){
+                        
                                 component =
                                 <div>
                                     <h1 className = 'page-header'> Your feedback is: </h1>
-                                    <textarea className = 'user-response' readonly = 'true' style = {{ top: '20vh', height: '40vh' }} value = { localStorage.getItem('feedback') } />
-                                    <Ratings selectedRating = { localStorage.getItem('feedback-rating') } top = '63vh' left = '5vw' />
-                                    <div className = 'prompt-submit' style = {{ top: '63vh' }}>
-                                        <button className = 'prompt-submit' style = {{ top: '63vh' }}> Continue </button>
-                                        <div className = 'bottom-bar' onClick = { () => this.nextRound() }> </div>
-                                    </div>
+                                    <textarea className = 'user-response' readOnly = {true} style = {{ top: '20vh', height: '40vh' }} value={this.state.feedback} />
+                                    <Ratings top = '63vh' left = '5vw' />
                                 </div>
-                            }else{
-                                component =
-                                <Waiting></Waiting>
-
-                            }
                         }
                     }
                 }
