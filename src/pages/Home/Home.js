@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
+import socket from '../../socket';
+
 import './Home.css';
 
 class Home extends React.Component {
@@ -38,7 +40,7 @@ class Home extends React.Component {
                                 state: {
                                     userID: this.state.id
                                 }
-                                }}> 
+                                }}>
                                 <p style = {{ height: '110%' }}> Join Room </p> 
                             </Link>
                         </div>
