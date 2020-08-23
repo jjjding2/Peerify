@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import socketIOClient from 'socket.io-client';
 
 import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
 import BackButton from '../../components/BackButton/BackButton';
