@@ -1,0 +1,53 @@
+.gold {
+    animation: 1s gold forwards;
+}
+
+.silver {
+    animation: 1s silver forwards;
+}
+
+.bronze {
+    animation: 1s bronze forwards;
+}
+
+.winner {
+    margin-top: -50px;
+    opacity: 0;
+    animation: 1s appear forwards;
+    animation-delay: 1s;
+}
+
+@keyframes gold {
+    from {
+        height: 0;
+    }
+    to {
+        height: 300px;
+    }
+}
+
+@keyframes silver {
+    from {
+        height: 0;
+    }
+    to {
+        height: 200px;
+    }
+}
+@keyframes bronze {
+    from {
+        height: 0;
+    }
+    to {
+        height: 100px;
+    }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
