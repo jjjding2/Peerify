@@ -35,8 +35,8 @@ class Results extends React.Component {
                 name: null,
                 score: null
             },
-            positive_words: [],
-            negative_words: [],
+            positive_words: {},
+            negative_words: {},
         }
 
         socket.emit('getResults', this.state.roomID, 3);
