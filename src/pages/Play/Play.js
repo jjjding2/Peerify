@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Redirect } from 'react-router-dom';
 import Ratings from '../../components/Ratings/Ratings';
 import Waiting from '../../components/Waiting/Waiting';
@@ -18,6 +17,10 @@ class Play extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            userID: props.location.state.userID,
+            roomID: props.location.state.roomID,
+            leader: props.location.state.leader,
+
             promptSubmitted: false,
             entrySubmitted: false,
             evalEntry: null,
@@ -25,21 +28,15 @@ class Play extends React.Component {
             evalSubmitted: false,
             allEvalSubmitted: false,
             feedback: null,
-            rating: null,
+            readyNextRound: false,
+            gameOver: false,
+
+            rating: 2.5,
         };
 
-        this.submitPrompt = this.submitPrompt.bind(this);
-        this.submitEntry = this.submitEntry.bind(this);
-        this.submitEval = this.submitEval.bind(this);
-    
-    }
+        socket.removeAllListeners();
 
-    componentDidMount() {
-
-        const { userID, roomID, leader } = this.props.location.state;
-        this.setState({ userID, roomID, leader });
-
-        if (this.state.userID == this.state.leader ) {
+        if(this.state.userID == this.state.leader) {
             socket.emit('promptStage', this.state.roomID);
         }
 
@@ -53,7 +50,10 @@ class Play extends React.Component {
         });
 
         socket.on('prompt', prompt => {
-            this.setState({ prompt });
+            this.setState({
+                prompt,
+                promptSubmitted: true,
+            });
         });
 
         socket.on('finishWriting', () => {
@@ -83,13 +83,13 @@ class Play extends React.Component {
         socket.on('finishEvaluation', () => {
             if (!this.state.evalSubmitted){
                 this.setState({ evalSubmitted: true });
-                socket.emit('sendEvaluation', this.state.userID, this.state.roomID, document.getElementById('user-evaluation').value, this.state.evalRating)
+                socket.emit('sendEvaluation', this.state.userID, this.state.roomID, document.getElementById('user-evaluation').value, this.state.rating)
             }
-            this.setState({ allEvalSubmitted: true });
+            // this.setState({ allEvalSubmitted: true });
         });
 
         socket.on('allEvaluated', () => {
-            this.setState({ allEvalSubmitted: true });
+            // this.setState({ allEvalSubmitted: true });
             socket.emit('getFeedback', this.state.userID, this.state.roomID);
             socket.emit('getScore', this.state.userID, this.state.roomID);
             if(this.state.userID == this.state.leader){
@@ -98,7 +98,12 @@ class Play extends React.Component {
         });
 
         socket.on('feedback', feedback => {
-            this.setState({ feedback: feedback.text, rating: feedback.rating });
+            this.setState({ 
+                feedback: feedback.text,
+                rating: feedback.rating
+            }, () => {
+                this.setState({ allEvalSubmitted: true });
+            });
         });
 
         socket.on('score', score => {
@@ -106,12 +111,19 @@ class Play extends React.Component {
         });
 
         socket.on('gameOver', () => { //implement later
-
+            this.setState({ gameOver: true });
         });
 
-        socket.on('finishFeedback', newLeader => {
+        socket.on('finishFeedback', () => {
+            if(!this.state.readyNextRound){
+                this.nextRound();
+            }
+        });
+
+        socket.on('allReadyNextGame', newLeader => {
             this.setState({
                 leader: newLeader,
+
                 promptSubmitted: false,
                 entrySubmitted: false,
                 evalEntry: null,
@@ -119,14 +131,22 @@ class Play extends React.Component {
                 evalSubmitted: false,
                 allEvalSubmitted: false,
                 feedback: null,
-                rating: null,
+                readyNextRound: false,
+
+                rating: 2.5,
             });
-            console.log(newLeader);
-            console.log(this.state.userID);
-            if (this.state.userID == this.state.leader){
+            // console.log(newLeader);
+            // console.log(this.state.userID);
+            if(this.state.userID == newLeader){
                 socket.emit('promptStage', this.state.roomID);
             }
         });
+
+        this.submitPrompt = this.submitPrompt.bind(this);
+        this.submitEntry = this.submitEntry.bind(this);
+        this.submitEval = this.submitEval.bind(this);
+        this.updateRating = this.updateRating.bind(this);
+        this.nextRound = this.nextRound.bind(this);
     }
 
     submitPrompt() {
@@ -143,10 +163,24 @@ class Play extends React.Component {
 
     submitEval() {
         this.setState({ evalSubmitted: true });
-        socket.emit('sendEvaluation', this.state.userID, this.state.roomID, document.getElementById('user-evaluation').value, 3);
+        socket.emit('sendEvaluation', this.state.userID, this.state.roomID, document.getElementById('user-evaluation').value, this.state.rating);
+    }
+
+    updateRating(val) {
+        this.setState({
+            rating: val,
+        });
+    }
+
+    nextRound() {
+        socket.emit('sendReadyNextGame', this.state.userID, this.state.roomID);
+        this.setState({
+            readyNextRound: true,
+        });
     }
     
     render() {
+        if(this.state.gameOver) return <Redirect to = '/' />
         let component = null;
 
         if(!this.state.promptSubmitted){
@@ -187,23 +221,32 @@ class Play extends React.Component {
                             <h1 className = 'page-header'> Your partner's response was: </h1>
                             <textarea className = 'user-response' readOnly = {true} style = {{ top: '20vh', height: '25vh' }} value={this.state.evalEntry}/>
                             <textarea id = 'user-evaluation' className = 'user-response' style = {{ top: '48vh', height: '30vh' }} placeholder = 'Any advice/thoughts?' />
-                            <div className = 'prompt-submit' style = {{ top: '90vh' }}>
-                                <button className = 'prompt-submit' style = {{ top: '90vh' }}> Submit </button>
+                            <Ratings top = '80vh' left = '5vw' onSelectRating = { this.updateRating } />
+                            <div className = 'prompt-submit' style = {{ top: '80vh' }}>
+                                <button className = 'prompt-submit' style = {{ top: '80vh' }}> Submit </button>
                                 <div className = 'bottom-bar' onClick = { () => this.submitEval() }> </div>
                             </div>
                         </div>
                     }else{
                         if(!this.state.allEvalSubmitted){
                             component =
-                            <h1 className = 'page-header'> Waiting for other players to finish... </h1>
+                            <Waiting></Waiting>
                         }else{
-                        
+                            if(!this.state.readyNextRound){
                                 component =
                                 <div>
                                     <h1 className = 'page-header'> Your feedback is: </h1>
                                     <textarea className = 'user-response' readOnly = {true} style = {{ top: '20vh', height: '40vh' }} value={this.state.feedback} />
-                                    <Ratings top = '63vh' left = '5vw' />
+                                    <Ratings top = '63vh' left = '5vw' selectedRating = { this.state.rating } />
+                                    <div className = 'prompt-submit' style = {{ top: '63vh' }}>
+                                        <button className = 'prompt-submit' style = {{ top: '63vh' }}> Continue </button>
+                                        <div className = 'bottom-bar' onClick = { () => this.nextRound() }> </div>
+                                    </div>
                                 </div>
+                            }else{
+                                component =
+                                <Waiting></Waiting>
+                            }
                         }
                     }
                 }

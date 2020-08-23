@@ -11,7 +11,7 @@ class WaitingRoom extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log(props);
+        // console.log(props);
 
         this.state = {
             userID: props.location.state.userID,
@@ -20,14 +20,20 @@ class WaitingRoom extends React.Component {
 
             readyToStart: false,
         };
+
+        socket.on('start', leader => {
+            if(leader != "FAILED"){
+                this.setState({
+                    readyToStart: true,
+                    leader
+                });
+            }
+        });
     }
 
     startGame = () => {
         console.log("START");
         socket.emit('startGame', this.state.roomID);
-        socket.on('start', leader => {
-            this.setState({ readyToStart: true, leader });
-        });
     }
 
     render() {
@@ -38,11 +44,13 @@ class WaitingRoom extends React.Component {
                 <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '10vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
                     Room ID: { this.state.roomID }
                 </p>
-                { this.state.userID == this.state.leader ?
-                <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '10vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
-                    Start Game
-                </button>
-                :null}
+                { 
+                    this.state.userID == this.state.leader ?
+                    <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '10vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
+                        Start Game
+                    </button>
+                    :null
+                }
                 <JoinedPlayers roomID = { this.state.roomID } />
                 {
                     this.state.readyToStart?

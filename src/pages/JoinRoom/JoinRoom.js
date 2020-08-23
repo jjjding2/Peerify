@@ -18,34 +18,32 @@ class JoinRoom extends React.Component {
         super();
 
         this.state = {
+            userID: 0,
             roomID: 0,
         };
 
         socket.on('joinStatus', result => {
             if(result != "FAILED"){
-                localStorage.setItem('roomID', result);
                 this.setState({
                     roomID: result,
-                })
+                });
             }
             console.log(result);
         });
+        socket.emit('createId');
+        socket.on('getId', id => {
+            this.state.userID = id;
+        });
 
         this.joinRoom = this.joinRoom.bind(this);
-    }
-
-    componentDidMount() {
-        const { userID } = this.props.location.state;
-        this.setState({ userID });
     }
 
     joinRoom() {
         let roomID = trimText(document.getElementById('room-code').value);
         let nickname = trimText(document.getElementById('nickname').value);
         if(nickname == "") return;
-        console.log(nickname);
-        socket.emit('setNickname', localStorage.getItem('userID'), roomID, nickname);
-        socket.emit('joinRoom', localStorage.getItem('userID'), roomID);
+        socket.emit('setNickname', this.state.userID, roomID, nickname);
+        socket.emit('joinRoom', this.state.userID, roomID);
     }
 
     render() {
@@ -62,6 +60,7 @@ class JoinRoom extends React.Component {
                     <Redirect to = {{
                         pathname: '/waiting',
                         state: {
+                            userID: this.state.userID,
                             roomID: this.state.roomID,
                         }
                     }} />

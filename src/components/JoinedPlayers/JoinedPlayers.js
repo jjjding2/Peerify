@@ -16,9 +16,6 @@ class JoinedPlayers extends React.Component {
 
         // console.log("ROOM ID " + props.roomID);
         socket.emit('getRoomList', props.roomID);
-    }
-
-    componentDidMount() {
         socket.on('roomList', data => {
             let nick_list = [];
             console.log("gETTING ROOM LIST");
@@ -28,7 +25,8 @@ class JoinedPlayers extends React.Component {
             }
             this.state.currentPlayers = nick_list;
             this.forceUpdate();
-            // console.log("DAB");
+            // this.forceUpdate();
+            console.log("DAB");
             // console.log(data);
         });
 
@@ -37,7 +35,7 @@ class JoinedPlayers extends React.Component {
             tt.push(userNick);
             this.setState({
                 currentPlayers: tt,
-            })
+            });
             console.log(userNick + " has joined");
         });
     }
