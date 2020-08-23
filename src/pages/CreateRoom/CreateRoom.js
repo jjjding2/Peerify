@@ -41,6 +41,11 @@ class CreateRoom extends React.Component {
         this.setState({
             numRounds: num_rounds,
         });
+<<<<<<< HEAD
+        socket.emit('startGame', this.state.roomID);
+        localStorage.setItem('leaderID', localStorage.getItem('userID'));
+=======
+>>>>>>> 8c1b2206194559e1d2cd75cc282c4bdfe3fd6c69
     }
 
     render() {
