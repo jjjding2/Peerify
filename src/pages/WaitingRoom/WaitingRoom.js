@@ -42,7 +42,7 @@ class WaitingRoom extends React.Component {
         return (
             <div>
                 <BackButton />
-                <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '10vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
+                <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '10vh', fontSize: '3vh',fontfamily: 'Montserrat-Bold'}}>
                     Room ID: { this.state.roomID }
                 </p>
                 { 
