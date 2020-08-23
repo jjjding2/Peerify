@@ -7,3 +7,16 @@
     background: rgba(0,0,0,0.05);
     border-radius: 3px;
 }
+
+.user-entry {
+    width: 18.8%;
+    /* height: 20%; */
+    padding-top: 0%;
+    padding-bottom: 0%;
+    font-size: 2vh;
+    text-align: center;
+    font-family: 'OpenSans-Light';
+    background: rgba(200,200,200);
+    border-radius: 8px;
+    position: absolute;
+}

@@ -19,8 +19,7 @@ class CreateRoom extends React.Component {
         super();
 
         this.state = {
-            roomID: localStorage.getItem('roomID'),
-            numRounds: -1,
+            roomID: 0,
         };
 
         this.create = this.create.bind(this);
@@ -32,14 +31,14 @@ class CreateRoom extends React.Component {
         if(owner_nick == "" || num_rounds == "") return;
 
         socket.emit('createRoom', localStorage.getItem('userID'), num_rounds);
-        socket.emit('setNickname', localStorage.getItem('userID'), this.state.roomID, owner_nick);
-        socket.on('sendRoomId', roomID => {
+        socket.on('sendRoomId', pp => {
             // localStorage.setItem('roomID', roomID);
-            this.setState({ roomID: roomID });
-        });
-
-        this.setState({
-            numRounds: num_rounds,
+            localStorage.setItem('roomID', pp);
+            socket.emit('setNickname', localStorage.getItem('userID'), pp, owner_nick);
+            this.setState({
+                roomID: pp
+            });
+            console.log(pp);
         });
     }
 
@@ -48,7 +47,7 @@ class CreateRoom extends React.Component {
         return (
             <div>
                 {
-                    this.state.numRounds == -1?
+                    this.state.roomID == 0?
                     <div>
                         <BackButton />
                         <div className = 'enter-room-code'>
@@ -62,7 +61,6 @@ class CreateRoom extends React.Component {
                         pathname: '/waiting',
                         state: {
                             roomID: this.state.roomID,
-                            numRounds: this.state.numRounds,
                         }
                     }} />
                 }
