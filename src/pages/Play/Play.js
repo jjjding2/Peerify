@@ -64,6 +64,7 @@ class Play extends React.Component {
 
         socket.on('evaluation', entry => {
             localStorage.setItem('evaluationText', entry.text);
+            localStorage.setItem('evaluation-ready', true);
             this.forceUpdate();
         });
 

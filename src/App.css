@@ -59,4 +59,5 @@ input[type=number] {
     height: 1vh;
     top: 0%;
     background-image: linear-gradient(to right, rgba(29,133,224), rgba(29,221,224));
+    z-index: 9999;
 }

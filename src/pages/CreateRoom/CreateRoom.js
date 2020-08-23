@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 
 import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
-import Navbar from '../../components/Navbar/Navbar';
+import BackButton from '../../components/BackButton/BackButton';
 
 import './CreateRoom.css';
 
@@ -72,20 +72,22 @@ class CreateRoom extends React.Component {
         const roomIDText = "Room ID: " + this.state.roomID;
         return (
             <div>
-                <Navbar />
                 {
                     this.state.numRounds == -1?
-                    <div className = 'enter-room-code'>
-                        <input id = 'owner-nickname' className = 'enter-code-box' placeholder = 'Nickname' />
-                        <input id = 'num-rounds' className = 'enter-code-box' style = {{ top: '50%' }} type = 'number' placeholder = '# Rounds' />
-                        <button className = 'confirm-join-button' style = {{ top: '100%' }} onClick = { this.create }> Create </button>
+                    <div>
+                        <BackButton />
+                        <div className = 'enter-room-code'>
+                            <input id = 'owner-nickname' className = 'enter-code-box' placeholder = 'Nickname' />
+                            <input id = 'num-rounds' className = 'enter-code-box' style = {{ top: '50%' }} type = 'number' placeholder = '# Rounds' />
+                            <button className = 'confirm-join-button' style = {{ top: '100%' }} onClick = { this.create }> Create </button>
+                        </div>
                     </div>
                     :
                     <div>
-                        <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '8vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
+                        <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '6vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
                             Room ID: { this.state.roomID }
                         </p>
-                        <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '8vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
+                        <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '6vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
                             Start Game
                         </button>
                         <JoinedPlayers roomID = { this.state.roomID } />

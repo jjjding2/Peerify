@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Navbar from '../../components/Navbar/Navbar';
+import BackButton from '../../components/BackButton/BackButton';
 
 import socket from '../../socket';
 
@@ -19,7 +19,7 @@ class JoinRoom extends React.Component {
     render() {
         return (
             <div>
-                <Navbar />
+                <BackButton />
                 <div className = 'enter-room-code'>
                     <input id='text' className = 'enter-code-box' placeholder = 'Enter Room ID' />
                     <button className = 'confirm-join-button' onClick={this.joinRoom()}> Join </button>
