@@ -55,7 +55,25 @@ class Play extends React.Component {
                 }
             ],
             userEntries: [
-
+                {
+                    name: 'adsfasfds',
+                    text: 'sadfsafasdf'
+                },{
+                    name: 'dsafasdff',
+                    text: 'dasfasdf',
+                }, {
+                    name: 'adsfasf',
+                    text: 'sdafas',
+                },{
+                    name: 'adsfasfds',
+                    text: 'sadfsafasdf'
+                },{
+                    name: 'dsafasdff',
+                    text: 'dasfasdf',
+                }, {
+                    name: 'adsfasf',
+                    text: 'sdafas',
+                }
             ],
 
             rating: 2.5,
@@ -276,37 +294,48 @@ class Play extends React.Component {
                                     if (!this.state.doneScoreboard){
                                         component = 
                                         <div style={{ textAlign: 'center' }}>
-                                            <h1 className = 'page-header' style={{ marginTop: '100px', fontSize: '60px' }}>Current Scoreboard</h1>
-                                            <div style={{ display: 'flex', width: '100%', height: '100vh', marginTop: '300px', justifyContent: 'center'}}>
-                                            <img src={steppingUp} style={{ width: '500px', height: '380px' }}></img>
-                                            <div>
-                                                <h2 className='scoreboard'>Name</h2>
-                                                {
-                                                this.state.topUsers.map(function(user, idx) {
-                                                    if (user.name != ""){
-                                                        return (
-                                                            <h3 className='scoreboard'>{user.name}</h3>
-                                                        )
+                                            <div style={{ display: 'inline-block', marginTop: '100px', backgroundColor: '#6C63FF', borderRadius: '90px', padding: '0 30px'}}>
+                                                <h1 style={{ fontSize: '60px', color: 'white' }}>Current Scoreboard</h1>
+                                            </div>
+                                            <div style={{ display: 'flex', width: '100%', height: '100vh', marginTop: '50px', justifyContent: 'center'}}>
+                                                <img src={steppingUp} style={{ width: '500px', height: '380px' }}></img>
+                                                <div style={{ width: '540px'}}>
+                                                <   div style={{ display: 'flex', backgroundColor: '#6C63FF', borderRadius: '20px', justifyContent: 'space-between', marginBottom: '10px'}}>
+                                                        <div style={{marginLeft: '40px'}}>
+                                                            <h3 className='scoreboard' style={{ textDecoration: 'underline'}}> Name </h3>
+                                                        </div>
+                                                        <div style={{marginRight: '40px'}}>
+                                                            <h3 className='scoreboard' style={{ textDecoration: 'underline'}}> Score </h3>
+                                                        </div>
+                                                    </div>
+                                                    {   
+                                                        this.state.topUsers.map(function(user, idx) {
+                                                            if (user.name == "") return;
+                                                            let color;
+                                                            if (idx==0) color = '#F7D802';
+                                                            else if (idx==1) color = '#DEDEDE';
+                                                            else if (idx==2) color = '#C77B30';
+                                                            else color = 'white';
+                                                            return (
+                                                                <div style={{ display: 'flex', backgroundColor: color, borderRadius: '20px', justifyContent: 'space-between', marginBottom: '5px' }}>
+                                                                    <div style={{marginLeft: '40px'}}>
+                                                                        <h3 className='scoreboard'> {user.name} </h3>
+                                                                    </div>
+                                                                    <div style={{marginRight: '40px'}}>
+                                                                        <h3 className='scoreboard'>{user.score}</h3>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        })
                                                     }
-                                                })
-                                            }
+                                                </div>
+                                        
+                                                <img src={books} style={{ width: '500px', height: '266px' }}></img>
                                             </div>
-                                            <div style={{marginLeft: '300px'}}>
-                                            <h2 className='scoreboard'>Score</h2>
-                                            {
-                                                this.state.topUsers.map(function(user, idx) {
-                                                    if (user.name != ""){
-                                                        return (
-                                                            <h3 className='scoreboard'>{user.score}</h3>
-                                                        )
-                                                    }
-                                                })
-                                            }
+                                            <div style={{ display: 'inline-block', marginTop: '100px', backgroundColor: '#6C63FF', borderRadius: '90px', padding: '0 30px'}}>
+                                                <h1 style={{ fontSize: '60px', color: 'white'}}> Entries </h1>
                                             </div>
-                                            <img src={books} style={{ width: '500px', height: '266px' }}></img>
-                                            </div>
-                                            <h2> Entries </h2>
-                                            <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginBottom: '500px'}}>
+                                            <div style={{ display: 'flex', width: '100%',  justifyContent: 'center', marginTop: '50px', marginBottom: '500px', overflow: 'scroll'}}>
                                             {
                                                 this.state.userEntries.map(function(entry, idx) {
                                                     return (
@@ -320,8 +349,8 @@ class Play extends React.Component {
                                                 })
                                             }
                                             </div>
-                                            <div className = 'prompt-submit' style = {{ top: '63vh' }}>
-                                                <button className = 'prompt-submit' style = {{ top: '63vh' }}> Continue </button>
+                                            <div className = 'prompt-submit' style = {{ top: '90vh' }}>
+                                                <button className = 'prompt-submit' style = {{ top: '90vh' }}> Continue </button>
                                                 <div className = 'bottom-bar' onClick = { () => this.doneScoreboard() }> </div>
                                             </div>
                                         </div>
