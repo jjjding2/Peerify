@@ -293,14 +293,14 @@ class Play extends React.Component {
                                 }else {
                                     if (!this.state.doneScoreboard){
                                         component = 
-                                        <div style={{ textAlign: 'center' }}>
+                                        <div style={{ fontFamily: 'Montserrat-Bold', textAlign: 'center' }}>
                                             <div style={{ display: 'inline-block', marginTop: '100px', backgroundColor: '#6C63FF', borderRadius: '90px', padding: '0 30px'}}>
                                                 <h1 style={{ fontSize: '60px', color: 'white' }}>Current Scoreboard</h1>
                                             </div>
                                             <div style={{ display: 'flex', width: '100%', height: '100vh', marginTop: '50px', justifyContent: 'center'}}>
                                                 <img src={steppingUp} style={{ width: '500px', height: '380px' }}></img>
                                                 <div style={{ width: '540px'}}>
-                                                <   div style={{ display: 'flex', backgroundColor: '#6C63FF', borderRadius: '20px', justifyContent: 'space-between', marginBottom: '10px'}}>
+                                                <   div style={{ fontFamily: 'Montserrat-Bold', display: 'flex', backgroundColor: '#6C63FF', borderRadius: '20px', justifyContent: 'space-between', marginBottom: '10px'}}>
                                                         <div style={{marginLeft: '40px'}}>
                                                             <h3 className='scoreboard' style={{ textDecoration: 'underline'}}> Name </h3>
                                                         </div>
@@ -317,7 +317,7 @@ class Play extends React.Component {
                                                             else if (idx==2) color = '#C77B30';
                                                             else color = 'white';
                                                             return (
-                                                                <div style={{ display: 'flex', backgroundColor: color, borderRadius: '20px', justifyContent: 'space-between', marginBottom: '5px' }}>
+                                                                <div style={{ fontFamily: 'Montserrat-Bold', display: 'flex', backgroundColor: color, borderRadius: '20px', justifyContent: 'space-between', marginBottom: '5px' }}>
                                                                     <div style={{marginLeft: '40px'}}>
                                                                         <h3 className='scoreboard'> {user.name} </h3>
                                                                     </div>
