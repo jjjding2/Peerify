@@ -120,11 +120,12 @@ class Play extends React.Component {
         });
 
         socket.on('finishFeedback', () => {
+            console.log("FEEDBACK FINISHED");
             if(!this.state.doneFeedback){
                 this.setState({ allDoneFeedback: true, doneFeedback: true });
             }
-            socket.emit('scoreboardStage', this.state.roomID);
             if (this.state.userID == this.state.leader) {
+                socket.emit('scoreboardStage', this.state.roomID);
                 socket.emit('getResults', this.state.roomID, 5);
             }
         });
@@ -135,6 +136,7 @@ class Play extends React.Component {
         });
 
         socket.on('allDoneWithFeedback', () => {
+            console.log("FEEDBACK DONE");
             this.setState({ allDoneFeedback: true, doneFeedback: true });
             if (this.state.userID == this.state.leader){
                 socket.emit('scoreboardStage', this.state.roomID);

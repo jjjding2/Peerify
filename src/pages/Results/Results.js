@@ -37,13 +37,14 @@ class Results extends React.Component {
                 <BackButton />
                 <div style={{ width: '100%', height: '70%', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
                     <div className='silver' style={{ width: '10%', backgroundColor: '#DEDEDE', textAlign: 'center' }}>
-                        <h3 className='winner'>{ this.state.second.name }</h3>
+                        <h3 className='winner'>{ this.state.second.name } ({ this.state.second.score })</h3>
                     </div>
                     <div className='gold' style={{ width: '10%', backgroundColor: '#F7D802', margin: '0 50px', textAlign: 'center' }}>
-                        <h3 className='winner'>{ this.state.first.name }</h3>
+                        <h3 className='winner'>{ this.state.first.name } ({ this.state.first.score })</h3>
                     </div>
                     <div className='bronze' style={{ width: '10%', backgroundColor: '#C77B30', textAlign: 'center' }}>
-                        <h3 className='winner'>{ this.state.third.name }</h3>
+                        { this.state.third.name == "" ? null :
+                        <h3 className='winner'>{ this.state.third.name } ({ this.state.third.score })</h3> }
                     </div>
                 </div>
             </div>
