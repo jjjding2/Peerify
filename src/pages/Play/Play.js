@@ -30,9 +30,11 @@ class Play extends React.Component {
             feedback: null,
             doneFeedback: false,
             allDoneFeedback: false,
+            doneScoreboard: false,
             gameOver: false,
 
             topUsers: [],
+            userEntries: [],
 
             rating: 2.5,
         };
@@ -127,6 +129,7 @@ class Play extends React.Component {
             if (this.state.userID == this.state.leader) {
                 socket.emit('scoreboardStage', this.state.roomID);
                 socket.emit('getResults', this.state.roomID, 5);
+                socket.emit('getEntries', this.state.roomID);
             }
         });
 
@@ -135,12 +138,17 @@ class Play extends React.Component {
             this.setState({ topUsers: array });
         });
 
+        socket.on('entries', array => {
+            this.setState({ userEntries: array });
+        });
+
         socket.on('allDoneWithFeedback', () => {
             console.log("FEEDBACK DONE");
             this.setState({ allDoneFeedback: true, doneFeedback: true });
             if (this.state.userID == this.state.leader){
                 socket.emit('scoreboardStage', this.state.roomID);
                 socket.emit('getResults', this.state.roomID, 5);
+                socket.emit('getEntries', this.state.roomID);
             }
         });
 
@@ -161,6 +169,8 @@ class Play extends React.Component {
                 feedback: null,
                 doneFeedback: false,
                 allDoneFeedback: false,
+                doneScoreboard: false,
+                gameOver: false,
 
                 rating: 2.5,
             });
@@ -205,6 +215,11 @@ class Play extends React.Component {
         this.setState({ doneFeedback: true });
         console.log("ALLDONE FEEDBACK "+this.state.allDoneFeedback);
         socket.emit('doneWithFeedback', this.state.roomID);
+    }
+
+    doneScoreboard() {
+        this.setState({ doneScoreboard: true });
+        socket.emit('doneScoreboard', this.state.roomID);
     }
     
     render() {
@@ -283,17 +298,60 @@ class Play extends React.Component {
                                     component =
                                     <Waiting></Waiting>
                                 }else {
-                                    component = 
-                                    <div>
-                                        <h1 className = 'page-header'>Current Scoreboard</h1>
-                                        {
-                                            this.state.topUsers.map(function(user, idx) {
-                                                return (
-                                                    <h1>{user.name} {user.score}</h1>
-                                                )
-                                            })
-                                        }
-                                    </div>
+                                    if (!this.state.doneScoreboard){
+                                        component = 
+                                        <div style={{ textAlign: 'center' }}>
+                                            <h1 className = 'page-header'>Current Scoreboard</h1>
+                                            <div style={{ display: 'flex', width: '100%', marginTop: '120px', justifyContent: 'center'}}>
+                                            <div>
+                                                <h2>Name</h2>
+                                                {
+                                                this.state.topUsers.map(function(user, idx) {
+                                                    if (user.name != ""){
+                                                        return (
+                                                            <h3>{user.name}</h3>
+                                                        )
+                                                    }
+                                                })
+                                            }
+                                            </div>
+                                            <div style={{marginLeft: '100px'}}>
+                                            <h2>Score</h2>
+                                            {
+                                                this.state.topUsers.map(function(user, idx) {
+                                                    if (user.name != ""){
+                                                        return (
+                                                            <h3>{user.score}</h3>
+                                                        )
+                                                    }
+                                                })
+                                            }
+                                            </div>
+                                            </div>
+                                            <h2 style={{ marginTop: '100px' }}> Entries </h2>
+                                            <div style={{ display: 'flex', width: '100%', justifyContent: 'center'}}>
+                                            {
+                                                this.state.userEntries.map(function(entry, idx) {
+                                                    return (
+                                                        <div style={{margin: '10px'}}>
+                                                            <h2> {entry.name} </h2>
+                                                            <div style={{ width: '300px', height: '100px' }}>
+                                                                {entry.text}
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                            </div>
+                                            <div className = 'prompt-submit' style = {{ top: '63vh' }}>
+                                                <button className = 'prompt-submit' style = {{ top: '63vh' }}> Continue </button>
+                                                <div className = 'bottom-bar' onClick = { () => this.doneScoreboard() }> </div>
+                                            </div>
+                                        </div>
+                                    }else {
+                                        component =
+                                        <Waiting></Waiting>
+                                    }
                                 }
                             }
                         }
