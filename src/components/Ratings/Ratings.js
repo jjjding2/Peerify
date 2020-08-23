@@ -10,15 +10,19 @@ class Ratings extends React.Component {
         super(props);
     }
 
-    handleRatingChange = (newValue) => {
+    handleRatingChange(newValue) {
         this.props.onSelectRating(newValue);            
     }
 
     render() {
+        let component = null;
+
+        if(this.props.selectedRating == undefined) component = <Rating style = {{ top: this.props.top, left: this.props.left }} defaultValue={2.5} max={5} precision={0.5} value = {this.rating} onChange={(event, newValue) => this.handleRatingChange(newValue)} />
+        else component = <Rating style = {{ top: this.props.top, left: this.props.left }} readOnly = 'true' defaultValue={this.props.selectedRating} max={5} precision={0.5} value = {this.rating} />
 
         return (
             <Box component="fieldset" mb={3} borderColor="transparent">
-            <Rating name="customized-10" id = "rating" defaultValue={2.5} max={5} precision={0.5} value = {this.rating} onChange={(event, newValue) => this.handleRatingChange(newValue)}/>
+                { component }
             </Box>
         );
     }

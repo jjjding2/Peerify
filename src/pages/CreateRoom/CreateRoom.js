@@ -15,14 +15,6 @@ function trimText(str) {
     return str;
 }
 
-function clearLocalStorage() {
-    localStorage.removeItem('prompt');
-    localStorage.removeItem('user-response');
-    localStorage.removeItem('user-evaluation');
-    localStorage.removeItem('response-ready');
-    localStorage.removeItem('evaluation-ready');
-}
-
 class CreateRoom extends React.Component {
     constructor() {
         super();
@@ -44,8 +36,6 @@ class CreateRoom extends React.Component {
         let num_rounds = document.getElementById('num-rounds').value;
         if(owner_nick == "" || num_rounds == "") return;
 
-        console.log(localStorage.getItem('userID'));
-
         socket.emit('createRoom', localStorage.getItem('userID'), num_rounds);
         socket.on('sendRoomId', roomID => {
             // localStorage.setItem('roomID', roomID);
@@ -62,7 +52,7 @@ class CreateRoom extends React.Component {
 
     startGame() {
         localStorage.setItem("roomID", this.state.roomID);
-        clearLocalStorage();
+        global.clearLocalStorage();
         this.setState({
             readyToStart: true,
         });
