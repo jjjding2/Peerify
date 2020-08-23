@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
 import BackButton from '../../components/BackButton/BackButton';
 
 import './CreateRoom.css';
@@ -18,12 +17,15 @@ class CreateRoom extends React.Component {
     constructor() {
         super();
 
-        this.state = {
-            roomID: localStorage.getItem('roomID'),
-            numRounds: -1,
-        };
+        this.state = {};
+        //roomID, numRounds
 
         this.create = this.create.bind(this);
+    }
+
+    componentDidMount() {
+        const { userID } = this.props.location.state;
+        this.setState({ userID });
     }
 
     create() {
@@ -34,22 +36,13 @@ class CreateRoom extends React.Component {
         socket.emit('createRoom', localStorage.getItem('userID'), num_rounds);
         socket.emit('setNickname', localStorage.getItem('userID'), this.state.roomID, owner_nick);
         socket.on('sendRoomId', roomID => {
-            // localStorage.setItem('roomID', roomID);
             this.setState({ roomID: roomID });
         });
 
-        this.setState({
-            numRounds: num_rounds,
-        });
-<<<<<<< HEAD
-        socket.emit('startGame', this.state.roomID);
-        localStorage.setItem('leaderID', localStorage.getItem('userID'));
-=======
->>>>>>> 8c1b2206194559e1d2cd75cc282c4bdfe3fd6c69
+        this.setState({ numRounds: num_rounds });
     }
 
     render() {
-        const roomIDText = "Room ID: " + this.state.roomID;
         return (
             <div>
                 {
@@ -66,8 +59,9 @@ class CreateRoom extends React.Component {
                     <Redirect to = {{
                         pathname: '/waiting',
                         state: {
+                            userID: this.state.userID,
                             roomID: this.state.roomID,
-                            numRounds: this.state.numRounds,
+                            leader: this.state.userID,
                         }
                     }} />
                 }

@@ -11,23 +11,21 @@ class WaitingRoom extends React.Component {
         super(props);
 
         this.state = {
-            roomID: props.location.state.roomID,
-            numRounds: props.location.state.numRounds,
 
             readyToStart: false,
         }
-
-        this.startGame = this.startGame.bind(this);
+        socket.on('start', leader => {
+            this.setState({ readyToStart: true, leader });
+        });
     }
 
-    startGame() {
-        localStorage.setItem("roomID", this.state.roomID);
-        global.clearLocalStorage();
+    componentDidMount() {
+        const { userID, roomID, leader } = this.props.location.state;
+        this.setState({ userID, roomID, leader });
+    }
+
+    startGame = () => {
         socket.emit('startGame', this.state.roomID);
-        socket.emit('promptStage', this.state.roomID);
-        this.setState({
-            readyToStart: true,
-        });
     }
 
     render() {
@@ -37,13 +35,22 @@ class WaitingRoom extends React.Component {
                 <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '10vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
                     Room ID: { this.state.roomID }
                 </p>
+                { this.state.userID == this.state.leader ?
                 <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '10vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
                     Start Game
                 </button>
+                :null}
                 <JoinedPlayers roomID = { this.state.roomID } />
                 {
                     this.state.readyToStart?
-                    <Redirect to = '/play' />
+                    <Redirect to = {{
+                        pathname: '/play',
+                        state: {
+                            userID: this.state.userID,
+                            roomID: this.state.roomID,
+                            leader: this.state.leader
+                        }
+                    }} />
                     :null
                 }
             </div>

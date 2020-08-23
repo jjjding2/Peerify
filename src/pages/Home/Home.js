@@ -7,6 +7,11 @@ import './Home.css';
 class Home extends React.Component {
     constructor() {
         super();
+        this.state = {};
+
+        socket.on('createId', id => {
+            this.setState({ id });
+        });
     }
 
     render() {
@@ -16,14 +21,24 @@ class Home extends React.Component {
                 <div className = 'main-background'>
                     <div className = 'button' style = {{ left: '24%', top: '44%' }}>
                         <div className = 'bottom-bar'>
-                            <Link className = 'remove-styling-home' to = '/create-room'> 
+                            <Link className = 'remove-styling-home' to = {{
+                                pathname: '/create-room',
+                                state: {
+                                    userID: this.state.id
+                                }
+                                }}> 
                                 <p style = {{ height: '110%' }}> Create Room </p>
                             </Link>
                         </div>
                     </div>
                     <div className = 'button' style = {{ left: '57%', top: '30%' }}>
                         <div className = 'bottom-bar'>
-                            <Link className = 'remove-styling-home' to = '/join-room'> 
+                            <Link className = 'remove-styling-home' to ={{
+                                pathname: '/join-room',
+                                state: {
+                                    userID: this.state.id
+                                }
+                                }}> 
                                 <p style = {{ height: '110%' }}> Join Room </p> 
                             </Link>
                         </div>
