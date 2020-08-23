@@ -57,9 +57,9 @@ class Play extends React.Component {
 
         socket.on('allSubmitted', () => {
             if(this.state.isLeader){
-                socket.emit('evaluationStage', { roomId: localStorage.getItem("roomID") });
+                socket.emit('evaluationStage', localStorage.getItem("roomID"));
             }
-            socket.emit('getEvaluation', { userId: localStorage.getItem('userID'), roomId: localStorage.getItem('roomID') });
+            socket.emit('getEvaluation', localStorage.getItem('userID'), localStorage.getItem('roomID'));
         });
 
         socket.on('evaluation', entry => {
@@ -107,7 +107,7 @@ class Play extends React.Component {
         let pp = trimText(document.getElementById('prompt').value);
         if(pp == "" && forceSubmit == false) return;
         localStorage.setItem('prompt', pp);
-        socket.emit('writingStage', { roomId: localStorage.getItem('roomID'), prompt: pp })
+        socket.emit('writingStage', localStorage.getItem('roomID'), pp );
         this.forceUpdate();
     }
 
@@ -116,7 +116,7 @@ class Play extends React.Component {
         if(pp == "" && forceSubmit == false) return;
         localStorage.setItem('user-response', pp);
         localStorage.setItem('response-ready', true);
-        socket.emit('sendText', { userId: localStorage.getItem('userID'), roomId: localStorage.getItem('roomID'), text: pp });
+        socket.emit('sendText', localStorage.getItem('userID'), localStorage.getItem('roomID'), pp );
         this.forceUpdate();
     }
 
@@ -124,7 +124,7 @@ class Play extends React.Component {
         let pp = trimText(document.getElementById('user-evaluation').value);
         localStorage.setItem('user-evaluation', pp);
         localStorage.setItem('evaluation-ready', true);
-        socket.emit('sendEvaluation', { userId: localStorage.getItem('userID'), roomId: localStorage.getItem('roomID'), text: pp, rating: this.state.rating })
+        socket.emit('sendEvaluation', localStorage.getItem('userID'), localStorage.getItem('roomID'), pp, this.state.rating )
         this.forceUpdate();
     }
 
