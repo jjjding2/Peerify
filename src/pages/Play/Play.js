@@ -38,9 +38,10 @@ class Play extends React.Component {
     }
 
     componentDidMount() {
-        socket.on('play', leader => {
+        socket.on('start', leader => {
             localStorage.setItem('leaderID', leader);
-            this.state.isLeader = (leader == localStorage.getItem('userID'));
+            console.log(localStorage.getItem('userID')+" "+leader);
+            this.setState({ isLeader : (leader == localStorage.getItem('userID'))});
         });
 
         socket.on('finishPrompt', () => {
