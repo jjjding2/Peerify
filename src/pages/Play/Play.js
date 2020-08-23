@@ -307,9 +307,11 @@ class Play extends React.Component {
                                                 <h2>Name</h2>
                                                 {
                                                 this.state.topUsers.map(function(user, idx) {
-                                                    return (
-                                                        <h3>{user.name}</h3>
-                                                    )
+                                                    if (user.name != ""){
+                                                        return (
+                                                            <h3>{user.name}</h3>
+                                                        )
+                                                    }
                                                 })
                                             }
                                             </div>
@@ -317,9 +319,11 @@ class Play extends React.Component {
                                             <h2>Score</h2>
                                             {
                                                 this.state.topUsers.map(function(user, idx) {
-                                                    return (
-                                                        <h3>{user.score}</h3>
-                                                    )
+                                                    if (user.name != ""){
+                                                        return (
+                                                            <h3>{user.score}</h3>
+                                                        )
+                                                    }
                                                 })
                                             }
                                             </div>
@@ -331,7 +335,7 @@ class Play extends React.Component {
                                                     return (
                                                         <div style={{margin: '10px'}}>
                                                             <h2> {entry.name} </h2>
-                                                            <div style={{ width: '100px', height: '100px' }}>
+                                                            <div style={{ width: '300px', height: '100px' }}>
                                                                 {entry.text}
                                                             </div>
                                                         </div>
