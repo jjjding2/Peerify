@@ -3,8 +3,11 @@
     height: 15vh;
     background: transparent;
     position: fixed;
-    top: 50vh;
+    top: 45vh;
     left: 50vw;
+
+    font-family: 'Montserrat-Bold';
+    border-radius: 25px;
     transform: translate(-50%,-50%);
 }
 
@@ -16,9 +19,12 @@
     box-sizing:border-box;
     border: 0px solid transparent;
 
+    border-radius: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-size: 2.3vh;
     text-align: center;
-    font-family: 'OpenSans-Light';
+    font-family: 'Montserrat-Bold';
 }
 
 .confirm-join-button {
@@ -26,12 +32,18 @@
     height: 50%;
     top: 50%;
 
+    /*
     background: rgba(200,200,200,0.5);
+    */
+    background: #26ccff;
     box-sizing:border-box;
     border: 0px solid transparent;
 
+    border-radius: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-size: 2.3vh;
-    font-family: 'OpenSans-Light';
+    font-family: 'Montserrat-Bold';
 
     cursor: pointer;
 }

@@ -4,7 +4,8 @@
     height: 6vh;
     width: 8vw;
 
-    background: transparent;
+    background: rgba(210,210,210);
+    border-radius: 30px;
     border: none;
     outline: none;
 
@@ -12,18 +13,23 @@
     left: 2vw;
 
     font-size: 2.6vh;
-    font-family: 'OpenSans-Light';
-    color: black;
+    font-family: 'Montserrat-Bold';
+    color: rgba(150,150,150);
+    
 
     transition: 0.5s;
+}
+.back-button:hover{
+    background: rgba(220,220,220);
 }
 
 .remove-styling-back {
     text-decoration: none;
-    color: black;
+    color: rgba(150,150,150);
     transition: 0.5s;
 }
-
+/*
 .remove-styling-back:hover {
     color: rgba(200,200,200);
 }
+*/
