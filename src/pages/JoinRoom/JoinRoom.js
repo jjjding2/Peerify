@@ -13,7 +13,7 @@ class JoinRoom extends React.Component {
 
     joinRoom = () => {
         const roomID = 'roomID'; //get room id
-        socket.emit('joinRoom', roomID); 
+        socket.emit('joinRoom', roomID);
     }
 
     render() {

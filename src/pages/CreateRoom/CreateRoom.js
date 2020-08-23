@@ -20,15 +20,11 @@ class CreateRoom extends React.Component {
         super();
 
         this.state = {
-            roomID: 0,
+            roomID: localStorage.getItem('roomID'),
             numRounds: -1,
-            currentPlayers: [],
-
-            readyToStart: false,
         };
 
         this.create = this.create.bind(this);
-        this.startGame = this.startGame.bind(this);
     }
 
     create() {
@@ -37,27 +33,15 @@ class CreateRoom extends React.Component {
         if(owner_nick == "" || num_rounds == "") return;
 
         socket.emit('createRoom', localStorage.getItem('userID'), num_rounds);
+        socket.emit('setNickname', localStorage.getItem('userID'), this.state.roomID, owner_nick);
         socket.on('sendRoomId', roomID => {
             // localStorage.setItem('roomID', roomID);
             this.setState({ roomID: roomID });
         });
 
-        let curr = this.state.currentPlayers;
-        curr.push(owner_nick);
         this.setState({
             numRounds: num_rounds,
-            currentPlayers: curr,
         });
-    }
-
-    startGame() {
-        localStorage.setItem("roomID", this.state.roomID);
-        global.clearLocalStorage();
-        this.setState({
-            readyToStart: true,
-        });
-        socket.emit('startGame', this.state.roomID);
-        socket.emit('promptStage', this.state.roomID);
     }
 
     render() {
@@ -75,20 +59,13 @@ class CreateRoom extends React.Component {
                         </div>
                     </div>
                     :
-                    <div>
-                        <p style = {{ height: '6vh', position: 'fixed', left: '4vw', top: '6vh', fontSize: '3vh', fontFamily: 'OpenSans-Light' }}>
-                            Room ID: { this.state.roomID }
-                        </p>
-                        <button className = 'start-button' style = {{ position: 'fixed', right: '4vw', top: '6vh', transform: 'translate(0,50%)' }} onClick = { this.startGame }>
-                            Start Game
-                        </button>
-                        <JoinedPlayers roomID = { this.state.roomID } />
-                    </div>
-                }
-                {
-                    this.state.readyToStart?
-                    <Redirect to = '/play' />
-                    :null
+                    <Redirect to = {{
+                        pathname: '/waiting',
+                        state: {
+                            roomID: this.state.roomID,
+                            numRounds: this.state.numRounds,
+                        }
+                    }} />
                 }
             </div>
         );
