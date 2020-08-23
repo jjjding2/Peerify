@@ -56,7 +56,7 @@ class CreateRoom extends React.Component {
             readyToStart: true,
         });
         socket.emit('startGame', this.state.roomID);
-        socket.emit('promptStage', this.state.roomID);
+        localStorage.setItem('leaderID', localStorage.getItem('userID'));
     }
 
     render() {

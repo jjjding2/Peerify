@@ -1,12 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-<<<<<<< HEAD
 import JoinedPlayers from '../../components/JoinedPlayers/JoinedPlayers';
-import Navbar from '../../components/Navbar/Navbar';
-=======
 import BackButton from '../../components/BackButton/BackButton';
->>>>>>> f1916f63d27c14c8953f921a103dbd9774c35dfb
 
 import socket from '../../socket';
 
@@ -17,9 +13,10 @@ class JoinRoom extends React.Component {
         super();
         this.state = {
             joinedRoom: false,
-            readyToStart: false
+            readyToStart: false,
         }
         socket.on('start', leader => {
+            localStorage.setItem('leader', leader);
             this.setState({ readyToStart: true });
         });
     }
@@ -28,7 +25,7 @@ class JoinRoom extends React.Component {
         const roomID = document.getElementById('roomID').value; //get room id
         console.log(roomID);
         socket.emit('joinRoom', localStorage.getItem('userID'), roomID); 
-        socket.on('validated', () => {
+        socket.on('validate', () => {
             this.setState({ joinedRoom: true, roomID });
         });
     }
@@ -36,12 +33,8 @@ class JoinRoom extends React.Component {
     render() {
         return (
             <div>
-<<<<<<< HEAD
-                <Navbar />
-                { !this.state.joinedRoom ?
-=======
                 <BackButton />
->>>>>>> f1916f63d27c14c8953f921a103dbd9774c35dfb
+                { !this.state.joinedRoom ?
                 <div className = 'enter-room-code'>
                     <input id='roomID' className = 'enter-code-box' placeholder = 'Enter Room ID' />
                     <button className = 'confirm-join-button' onClick={this.joinRoom}> Join </button>
@@ -52,7 +45,8 @@ class JoinRoom extends React.Component {
                         Room ID: { this.state.roomID }
                     </p>
                     <JoinedPlayers roomID = { this.state.roomID } />
-                </div>}
+                </div>
+                }
                 {
                     this.state.readyToStart?
                     <Redirect to = '/play' />
