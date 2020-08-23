@@ -5,6 +5,18 @@ import socket from '../../socket';
 
 import './Results.css';
 
+function formatMap(map) {
+    let ret = [];
+    for(let key in map){
+        console.log("OK" + key);
+        ret.push({
+            text: key,
+            value: map[key],
+        });
+    }
+    return ret;
+}
+
 class Results extends React.Component {
     constructor(props) {
         super(props);
@@ -22,12 +34,16 @@ class Results extends React.Component {
             third: {
                 name: null,
                 score: null
-            }
+            },
+            positive_words: [],
+            negative_words: [],
         }
 
         socket.emit('getResults', this.state.roomID, 3);
-        socket.on('finalResults', (first, second, third) => {
-            this.setState({ first, second, third });
+        socket.on('finalResults', (first, second, third, positive_words, negative_words) => {
+            this.setState({
+                first, second, third, positive_words, negative_words
+            });
         });
     }
 
@@ -46,6 +62,7 @@ class Results extends React.Component {
                         { this.state.third.name == "" ? null :
                         <h3 className='winner'>{ this.state.third.name } ({ this.state.third.score })</h3> }
                     </div>
+                    
                 </div>
             </div>
         );
