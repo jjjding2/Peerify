@@ -230,7 +230,7 @@ class Play extends React.Component {
             if(this.state.userID == this.state.leader){
                 component = 
                 <div>
-                    <input id = 'prompt' className = 'prompt' placeholder = 'Enter your prompt.' />
+                    <input autoComplete = 'false' id = 'prompt' className = 'prompt' placeholder = 'Enter your prompt.' />
                     <div className = 'prompt-submit'>
                         <button className = 'prompt-submit'> Submit </button>
                         <div className = 'bottom-bar' onClick = { () => this.submitPrompt() }> </div>
