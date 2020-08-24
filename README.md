@@ -1,9 +1,22 @@
-## Inspiration
-Studying online has turned education into a solitary experience. As a team of soon-to-be University students, we understand the value of study groups and collaboration. Thus, we were inspired to created Peerify – a game-based learning platform that turns study sessions into an exciting social experience.
+# Peerify
 
-## What it does
-We are all too familiar with grinding through AP FRQs and writing prompts with our classmates. The process of peer review and collaboration often brings out the best ideas from all parties, and makes a strenuous task enjoyable.
+Peerify is a game-based learning platform that turns study sessions into an exciting social experience.
 
-Our website facilitates this process online by allowing students to join online lobbies, create prompts, and review each other's responses in a style akin to online party games. Rooms are created with a unique id, which can be easily shared so people can join. Students have the freedom to ask any question, ranging from writing prompts to chemistry or geography problems. Communication is encouraged each round, and a point system is used to reward those with the best answers.
+Made by [@zxyl](https://github.com/zxyil), [@Zandew](https://github.com/Zandew) and [@jjjding2](https://github.com/jjjding2) at Ignition Hacks 2020.
 
-Following each round, we use machine learning to generate insights that allow students make the most of their experience. The feedback is analyzed and key words and topics are displayed as a word map, highlighting the subject areas that should be reviewed. This data can help educators plan future lessons and contribute to our dataset which guides future games.
+
+Demo here: https://www.youtube.com/watch?v=hsLmO2bPO3I
+
+Backend: https://github.com/Zandew/Peerify-backend
+
+
+### Built with:
+<p>
+    <img alt="React" src="https://img.shields.io/badge/-React-00A1DD?style=for-the-badge&logo=react&logoColor=white" />
+    <img alt="Python" src="https://img.shields.io/badge/-Python-yellow?style=for-the-badge&logo=python&logoColor=white" />
+    <img alt="Nodejs" src="https://img.shields.io/badge/-Nodejs-43853d?style=for-the-badge&logo=Node.js&logoColor=white" />
+    <img alt="SocketIO" src="https://img.shields.io/badge/-Socket.IO-010101?style=for-the-badge&logo=socket.io&logoColor=white" />
+    <img alt="Digital Ocean" src="https://img.shields.io/badge/-Digital Ocean-blue?style=for-the-badge&logo=digitalocean&logoColor=white" />
+    <img alt="Gensim" src="https://img.shields.io/badge/-Gensim-black?style=for-the-badge&logoColor=white" />
+    <img alt="Scikit-Learn" src="https://img.shields.io/badge/-sklearn-black?style=for-the-badge&logoColor=white" />
+</p>
