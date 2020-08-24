@@ -58,7 +58,7 @@ class Results extends React.Component {
                 <BackButton />
                 <div style={{ display: 'flex', width: '100%', height: '80%', justifyContent: 'space-between' }}>
                     <div style={{ width: '70%', height: '100%'}}>
-                        <div style={{ width: '100%', height: '20%', textAlign: 'center', paddingTop: '100px'}}>
+                        <div style={{ width: '100%', height: '20%', textAlign: 'center', paddingTop: '6vh'}}>
                             <h1 style={{ fontSize: '60px' }}> Congratulations! </h1>
                         </div>
                         <div style={{ width: '100%', height: '60%', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
@@ -74,8 +74,8 @@ class Results extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div style={{width: '30%', textAlign: 'center', marginRight: '200px'}}>
-                        <div style={{ display: 'inline-block', backgroundColor: 'rgb(91, 224, 29)', borderRadius: '20px', fontSize: '30px', fontWeight: '900', padding: '10px 20px'}}>
+                    <div style={{ position: 'fixed', right: '-10vw', width: '30%', textAlign: 'center', marginRight: '200px'}}>
+                        <div style={{ display: 'inline-block', backgroundColor: 'rgb(91, 224, 29)', borderRadius: '20px', fontSize: '2.3vh', fontWeight: '900', width: '20vw', paddingTop: '1vh', paddingBottom: '1vh'}}>
                             Positive Correlation
                         </div>
                         {
@@ -86,7 +86,7 @@ class Results extends React.Component {
                                 )
                             })
                         }
-                        <div style={{ display: 'inline-block', backgroundColor: 'rgb(224, 29, 38)', borderRadius: '20px', fontSize: '30px', fontWeight: '900', padding: '10px 20px', marginTop: '50px'}}>
+                        <div style={{ display: 'inline-block', backgroundColor: 'rgb(224, 29, 38)', borderRadius: '20px', fontSize: '2.3vh', fontWeight: '900', width: '20vw', paddingTop: '1vh', paddingBottom: '1vh', marginTop: '5vh' }}>
                             Negative Correlation
                         </div>
                         {
