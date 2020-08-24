@@ -3,9 +3,12 @@
     font-family: 'Montserrat-Bold';
     font-size: 10vh;
     z-index: 3;
-    top: 3vh;
-    left: 5vw;
-    /* transform: translate(-50%,0); */
+    top: 47vh;
+    left: 3vw;
+    transform: translate(0,-50%);
+    height: 60vh;
+    width: 40vw;
+    background: url('../../images/peerify.png') no-repeat center center / contain;
 }
 
 .button {
@@ -23,6 +26,7 @@
     /* background: black; */
     outline: none;
     border: none;
+    z-index: 2;
 
     color: black;
 }
@@ -48,6 +52,13 @@ p:hover {
     left: 57vw;
     transform: translate(-50%,0);
     background: url('../../images/homepage-flipped.png') no-repeat center center / contain;
+}
+
+.diamond {
+    position: absolute;
+    height: 23vh;
+    width: 23vh;
+    background: url('../../images/diamond.png') no-repeat center center / contain;
 }
 
 .bottom-bar {

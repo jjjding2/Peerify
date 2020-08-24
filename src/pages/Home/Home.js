@@ -19,31 +19,22 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                <h1 className = 'title'> Peerable </h1>
-                <div className = 'main-background'>
-                    <div className = 'button' style = {{ left: '24%', top: '44%' }}>
-                        <div className = 'bottom-bar'>
-                            <Link className = 'remove-styling-home' to = {{
-                                pathname: '/create-room',
-                                state: {
-                                    userID: this.state.id
-                                }
-                                }}> 
-                                <p style = {{ height: '110%' }}> Create Room </p>
-                            </Link>
-                        </div>
+                <div className = 'title'> </div>
+                <div className = 'diamond' style = {{ left: '73.3vw', top: '16.5vh' }}></div>
+                <div className = 'diamond' style = {{ height: '40vh', width: '40vh', left: '62vw', top: '28.5vh' }}></div>
+                <div className = 'diamond' style = {{ left: '60vw', top: '57.5vh' }}></div>
+                <div className = 'button' style = {{ left: '76.7%', top: '23.1%' }}>
+                    <div className = 'bottom-bar'>
+                        <Link className = 'remove-styling-home' to = '/create-room'>
+                            <p style = {{ height: '110%' }}> Create </p>
+                        </Link>
                     </div>
-                    <div className = 'button' style = {{ left: '57%', top: '30%' }}>
-                        <div className = 'bottom-bar'>
-                            <Link className = 'remove-styling-home' to ={{
-                                pathname: '/join-room',
-                                state: {
-                                    userID: this.state.id
-                                }
-                                }}>
-                                <p style = {{ height: '110%' }}> Join Room </p> 
-                            </Link>
-                        </div>
+                </div>
+                <div className = 'button' style = {{ left: '64.5%', top: '64.5%' }}>
+                    <div className = 'bottom-bar'>
+                        <Link className = 'remove-styling-home' to = '/join-room'>
+                            <p style = {{ height: '110%' }}> Join </p> 
+                        </Link>
                     </div>
                 </div>
             </div>
