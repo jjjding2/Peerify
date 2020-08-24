@@ -52,8 +52,8 @@ class CreateRoom extends React.Component {
                     <div>
                         <BackButton />
                         <div className = 'enter-room-code'>
-                            <input id = 'owner-nickname' className = 'enter-code-box' placeholder = 'Nickname' />
-                            <input id = 'num-rounds' className = 'enter-code-box' style = {{ top: '50%' }} type = 'number' placeholder = '# Rounds' />
+                            <input autoComplete = 'off' id = 'owner-nickname' className = 'enter-code-box' placeholder = 'Nickname' />
+                            <input autoComplete = 'off' id = 'num-rounds' className = 'enter-code-box' style = {{ top: '50%' }} type = 'number' placeholder = '# Rounds' />
                             <button className = 'confirm-join-button' style = {{ top: '100%' }} onClick = { this.create }> Create </button>
                         </div>
                     </div>
