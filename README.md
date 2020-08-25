@@ -17,6 +17,7 @@ Backend: https://github.com/Zandew/Peerify-backend
     <img alt="Nodejs" src="https://img.shields.io/badge/-Nodejs-43853d?style=for-the-badge&logo=Node.js&logoColor=white" />
     <img alt="SocketIO" src="https://img.shields.io/badge/-Socket.IO-010101?style=for-the-badge&logo=socket.io&logoColor=white" />
     <img alt="Digital Ocean" src="https://img.shields.io/badge/-Digital Ocean-blue?style=for-the-badge&logo=digitalocean&logoColor=white" />
+    <img alt="Apache" src="https://img.shields.io/badge/-Apache-D22128?style=for-the-badge&logo=apache&logoColor=white" />
     <img alt="Gensim" src="https://img.shields.io/badge/-Gensim-black?style=for-the-badge&logoColor=white" />
     <img alt="Scikit-Learn" src="https://img.shields.io/badge/-sklearn-black?style=for-the-badge&logoColor=white" />
 </p>
